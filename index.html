@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>FocusFlow</title>
-<!-- Официальный скрипт Telegram для Mini Apps -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -12,13 +11,31 @@
 [data-theme="light"]{--bg:#f4f5f9;--bg-elev:#fff;--surface:rgba(0,0,0,.03);--border:rgba(0,0,0,.08);--text:#12151d;--text-muted:#5b6070}
 [data-theme="emerald"]{--bg:#061410;--bg-elev:#0a1f18;--surface:rgba(16,185,129,.05);--border:rgba(16,185,129,.15);--accent:#10b981;--accent-2:#34d399}
 [data-theme="rose"]{--bg:#140810;--bg-elev:#1f0a18;--surface:rgba(244,63,94,.05);--border:rgba(244,63,94,.15);--accent:#f43f5e;--accent-2:#fb7185}
+[data-theme="ocean"]{--bg:#0a1929;--bg-elev:#0f2135;--surface:rgba(34,211,238,.05);--border:rgba(34,211,238,.15);--text:#e0f2fe;--text-muted:#7dd3fc;--accent:#0891b2;--accent-2:#22d3ee}
+[data-theme="sunset"]{--bg:#1a0d08;--bg-elev:#2a1510;--surface:rgba(251,146,60,.05);--border:rgba(251,146,60,.15);--text:#fef3c7;--text-muted:#fdba74;--accent:#f97316;--accent-2:#fbbf24}
+[data-theme="forest"]{--bg:#0a1408;--bg-elev:#122210;--surface:rgba(34,197,94,.05);--border:rgba(34,197,94,.15);--text:#dcfce7;--text-muted:#86efac;--accent:#16a34a;--accent-2:#4ade80}
+[data-theme="candy"]{--bg:#1a0a1a;--bg-elev:#2a1028;--surface:rgba(236,72,153,.05);--border:rgba(236,72,153,.15);--text:#fce7f3;--text-muted:#f9a8d4;--accent:#ec4899;--accent-2:#f472b6}
+[data-theme="space"]{--bg:#05050f;--bg-elev:#0a0a1a;--surface:rgba(139,92,246,.05);--border:rgba(139,92,246,.2);--text:#e0e7ff;--text-muted:#a5b4fc;--accent:#8b5cf6;--accent-2:#c084fc}
+[data-theme="tomato"]{--bg:#1a0505;--bg-elev:#2a0a0a;--surface:rgba(239,68,68,.05);--border:rgba(239,68,68,.2);--text:#fee2e2;--text-muted:#fca5a5;--accent:#ef4444;--accent-2:#f87171}
+[data-theme="cat"]{--bg:#1a1210;--bg-elev:#2a2018;--surface:rgba(251,191,36,.05);--border:rgba(251,191,36,.15);--text:#fef3c7;--text-muted:#fcd34d;--accent:#f59e0b;--accent-2:#fbbf24}
+[data-theme="rainbow"]{--bg:#0f0a1a;--bg-elev:#1a102a;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.1);--text:#fff;--text-muted:#d1d5db;--accent:#ff6b6b;--accent-2:#4ecdc4}
+[data-theme="gold"]{--bg:#0f0a03;--bg-elev:#1a1208;--surface:rgba(251,191,36,.08);--border:rgba(251,191,36,.3);--text:#fef3c7;--text-muted:#fcd34d;--accent:#f59e0b;--accent-2:#fbbf24}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,sans-serif;background:radial-gradient(circle at 50% -20%,rgba(99,102,241,.15),transparent 60%),var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden; padding-bottom: env(safe-area-inset-bottom);}
+body{font-family:Inter,sans-serif;background:radial-gradient(circle at 50% -20%,rgba(99,102,241,.15),transparent 60%),var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
 button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);background:rgba(11,13,18,.8);border-bottom:1px solid var(--border);flex-wrap:wrap}
 [data-theme="light"] header{background:rgba(244,245,249,.8)}
 [data-theme="emerald"] header{background:rgba(6,20,16,.8)}
 [data-theme="rose"] header{background:rgba(20,8,16,.8)}
+[data-theme="ocean"] header{background:rgba(10,25,41,.8)}
+[data-theme="sunset"] header{background:rgba(26,13,8,.8)}
+[data-theme="forest"] header{background:rgba(10,20,8,.8)}
+[data-theme="candy"] header{background:rgba(26,10,26,.8)}
+[data-theme="space"] header{background:rgba(5,5,15,.8)}
+[data-theme="tomato"] header{background:rgba(26,5,5,.8)}
+[data-theme="cat"] header{background:rgba(26,18,16,.8)}
+[data-theme="rainbow"] header{background:rgba(15,10,26,.8)}
+[data-theme="gold"] header{background:rgba(15,10,3,.8)}
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;margin-right:auto}
 .logo-mark{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
 .icon-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;width:34px;height:34px;display:grid;place-items:center;font-size:1rem}
@@ -64,21 +81,12 @@ header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky
 .shop-tab{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:20px;font-size:.8rem;cursor:pointer}
 .shop-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.shop-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:6px;position:relative;justify-content:space-between}
+.shop-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:6px;justify-content:space-between}
 .shop-item-icon{font-size:1.8rem}
 .shop-item-name{font-weight:600;font-size:.85rem}
 .shop-item-desc{font-size:.7rem;color:var(--text-muted);line-height:1.1}
 .shop-item-price{display:inline-block;background:rgba(251,191,36,.15);color:#fbbf24;padding:4px 8px;border-radius:10px;font-weight:700;font-size:.8rem;margin:0 auto}
 .shop-item button{padding:8px;font-size:.85rem;width:100%}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;z-index:200;transition:transform .3s ease;font-size:.9rem;color:var(--text)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.empty{color:var(--text-muted);font-size:.9rem;text-align:center;padding:20px}
-@keyframes coinUp{to{transform:translateY(-60px);opacity:0}}
-.wheel-container{position:relative;width:260px;height:260px;margin:20px auto;display:flex;justify-content:center;align-items:center}
-.wheel-pointer{position:absolute;top:-20px;font-size:2.5rem;color:var(--danger);z-index:10;text-shadow:0 2px 5px rgba(0,0,0,.5)}
-.wheel{width:100%;height:100%;border-radius:50%;border:6px solid var(--bg-elev);box-shadow:0 0 20px rgba(0,0,0,.6);position:relative;transition:transform 4s cubic-bezier(0.15, 0.85, 0.25, 1);background:conic-gradient(#6366f1 0 45deg, #22d3ee 45deg 90deg, #34d399 90deg 135deg, #f59e0b 135deg 180deg, #f43f5e 180deg 225deg, #a855f7 225deg 270deg, #14b8a6 270deg 315deg, #eab308 315deg 360deg);}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;background:var(--bg-elev);border:4px solid var(--border);display:grid;place-items:center;font-weight:800;font-size:0.85rem;cursor:pointer;z-index:5;color:var(--accent);box-shadow:0 0 15px rgba(0,0,0,.8);transition:.2s;text-align:center;line-height:1.1}
-.wheel-center:active{transform:translate(-50%,-50%) scale(0.95)}
 .quest-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .quest-info{flex:1}
 .quest-title{font-weight:600;font-size:0.9rem;margin-bottom:4px}
@@ -86,26 +94,67 @@ header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky
 .quest-actions{display:flex;flex-direction:column;gap:4px}
 .quest-actions button{padding:6px 10px;font-size:0.75rem;border-radius:8px;flex:none;width:auto}
 .btn-skip{background:var(--surface);border:1px solid var(--border);color:var(--text-muted)}
-.btn-skip:hover{color:var(--danger);border-color:var(--danger)}
 .btn-skip:disabled{opacity:0.5;cursor:not-allowed}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:12px;z-index:200;transition:transform .3s ease;font-size:.9rem;color:var(--text)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.wheel-container{position:relative;width:260px;height:260px;margin:20px auto;display:flex;justify-content:center;align-items:center}
+.wheel-pointer{position:absolute;top:-20px;font-size:2.5rem;color:var(--danger);z-index:10;text-shadow:0 2px 5px rgba(0,0,0,.5)}
+.wheel{width:100%;height:100%;border-radius:50%;border:6px solid var(--bg-elev);box-shadow:0 0 20px rgba(0,0,0,.6);position:relative;transition:transform 4s cubic-bezier(0.15, 0.85, 0.25, 1);background:conic-gradient(#6366f1 0 45deg, #22d3ee 45deg 90deg, #34d399 90deg 135deg, #f59e0b 135deg 180deg, #f43f5e 180deg 225deg, #a855f7 225deg 270deg, #14b8a6 270deg 315deg, #eab308 315deg 360deg);}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;background:var(--bg-elev);border:4px solid var(--border);display:grid;place-items:center;font-weight:800;font-size:0.85rem;cursor:pointer;z-index:5;color:var(--accent);box-shadow:0 0 15px rgba(0,0,0,.8);transition:.2s;text-align:center;line-height:1.1}
+.wheel-center:active{transform:translate(-50%,-50%) scale(0.95)}
+@keyframes coinUp{to{transform:translateY(-60px);opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.85}}
+@keyframes ringPulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes fireFlicker{0%,100%{opacity:1}50%{opacity:.85}}
+@keyframes rainbowShift{to{background-position:300% 0}}
+@keyframes goldShine{to{background-position:200% 0}}
+.skin-pulse .ring-fg{animation:ringPulse 2s ease-in-out infinite}
+.skin-glow .ring-fg{filter:drop-shadow(0 0 8px var(--accent))}
+.skin-dashed .ring-fg{stroke-dasharray:10 6}
+.skin-rainbow .ring-fg{stroke:url(#rainbowGrad)}
+.skin-fire .ring-fg{filter:drop-shadow(0 0 12px #f97316);animation:fireFlicker 1s infinite}
+.frame-bronze .logo-mark{box-shadow:0 0 0 2px #cd7f32}
+.frame-silver .logo-mark{box-shadow:0 0 0 2px #c0c0c0}
+.frame-gold .logo-mark{box-shadow:0 0 0 2px #fbbf24, 0 0 12px #fbbf24}
+.frame-diamond .logo-mark{box-shadow:0 0 0 2px #67e8f9, 0 0 16px #22d3ee}
+.frame-fire .logo-mark{box-shadow:0 0 0 2px #f97316, 0 0 16px #f97316;animation:fireFlicker 1s infinite}
+.frame-crown .logo-mark{box-shadow:0 0 0 3px #fbbf24, 0 0 20px #fbbf24;animation:goldShine 2s infinite}
 </style>
 </head>
 <body>
 <header>
 <div class="logo"><div class="logo-mark"></div>FocusFlow</div>
 <div class="wallet-badge"><span>🪙</span><span id="coinCount">0</span><span id="devBadge" hidden>♾️</span></div>
-<button class="icon-btn" id="questsBtn" title="Квесты">🎯</button>
-<button class="icon-btn" id="achieveBtn" title="Достижения">🏆</button>
+<button class="icon-btn" id="questsBtn">🎯</button>
 <button class="icon-btn" id="wheelBtn">🎡</button>
 <button class="icon-btn" id="statsBtn">📊</button>
 <button class="icon-btn" id="shopBtn">🛒</button>
 <button class="icon-btn" id="settingsBtn">⚙️</button>
 </header>
 <div class="app">
+<!-- ПИТОМЕЦ + СУНДУК -->
+<div class="card" style="display:flex;gap:10px;align-items:center;justify-content:space-between;text-align:center;">
+  <div style="flex:1;padding:10px;">
+    <div id="pet" style="font-size:3rem;line-height:1;transition:transform .3s;cursor:pointer;user-select:none">🥚</div>
+    <div id="petStatus" style="font-size:.75rem;color:var(--text-muted);margin-top:5px;">Сделай первый помидор!</div>
+  </div>
+  <div style="flex:1;">
+    <button class="btn btn-primary" id="chestBtn" style="padding:10px;font-size:.85rem;width:100%;">🎁 Сундук</button>
+    <div style="font-size:.7rem;color:var(--text-muted);margin-top:5px;" id="chestTimer">Готов к открытию!</div>
+  </div>
+</div>
+
 <section class="card timer-card">
-<div class="ring-wrap">
+<div class="ring-wrap" id="ringWrap">
 <svg viewBox="0 0 120 120">
-<defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--accent-2)"/></linearGradient></defs>
+<defs>
+<linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--accent-2)"/></linearGradient>
+<linearGradient id="rainbowGrad" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0%" stop-color="#ff6b6b"/><stop offset="25%" stop-color="#feca57"/>
+  <stop offset="50%" stop-color="#48dbfb"/><stop offset="75%" stop-color="#ff9ff3"/>
+  <stop offset="100%" stop-color="#54a0ff"/>
+</linearGradient>
+</defs>
 <circle class="ring-bg" cx="60" cy="60" r="54"/><circle class="ring-fg" id="ringFg" cx="60" cy="60" r="54" stroke-dasharray="339.292" stroke-dashoffset="0"/>
 </svg>
 <div class="timer-time" id="timerTime">25:00</div><div class="timer-phase" id="timerPhase">focus</div>
@@ -119,7 +168,6 @@ header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky
 </section>
 </div>
 
-<!-- Модалки -->
 <div class="modal-backdrop" id="modal">
 <div class="modal">
 <h3>Новая привычка</h3>
@@ -152,14 +200,32 @@ header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky
 <hr style="border-color:var(--border);margin:12px 0">
 <div class="field"><label>Промокод</label><div class="row"><input id="promoInput" placeholder="Введи код..."><button class="btn" id="applyPromoBtn">OK</button></div></div>
 <div id="vipStatus" style="font-size:.85rem;color:var(--text-muted);margin-bottom:12px"></div>
+<div class="row" style="margin-bottom:12px;">
+<button class="btn" id="exportBtn">Экспорт 💾</button>
+<button class="btn" id="importBtn">Импорт 📂</button>
+<input type="file" id="importFile" accept=".json" style="display:none;">
+</div>
 <div class="modal-actions"><button class="btn" id="closeSettingsBtn">Закрыть</button><button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button></div>
 </div>
 </div>
 
 <div class="modal-backdrop" id="shopModal">
 <div class="modal">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">🛒 Магазин</h3><div class="shop-item-price">🪙 <span id="shopCoins">0</span></div></div>
-<div class="shop-tabs"><button class="shop-tab active" data-tab="all">Все</button><button class="shop-tab" data-tab="theme">Темы</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3 style="margin:0">🛒 Магазин</h3>
+<div style="display:flex;align-items:center;gap:10px;">
+<div class="shop-item-price">🪙 <span id="shopCoins">0</span></div>
+<button id="topCloseShopBtn" style="background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;">✕</button>
+</div>
+</div>
+<div class="shop-tabs">
+<button class="shop-tab active" data-tab="all">Все</button>
+<button class="shop-tab" data-tab="theme">🎨 Темы</button>
+<button class="shop-tab" data-tab="consumable">⚡ Бустеры</button>
+<button class="shop-tab" data-tab="skin">✨ Скины</button>
+<button class="shop-tab" data-tab="sound">🔔 Звуки</button>
+<button class="shop-tab" data-tab="frame">🖼️ Рамки</button>
+</div>
 <div class="shop-grid" id="shopGrid"></div>
 <div class="modal-actions" style="margin-top:16px"><button class="btn" id="closeShopBtn">Закрыть</button></div>
 </div>
@@ -181,379 +247,691 @@ header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky
 <div class="modal"><h3>🎯 Квесты дня</h3><div id="questsContent"></div><div class="modal-actions"><button class="btn" onclick="document.getElementById('questsModal').classList.remove('open')">Закрыть</button></div></div>
 </div>
 
-<div class="modal-backdrop" id="achieveModal">
-<div class="modal"><h3>🏆 Достижения</h3><div id="achieveContent"></div><div class="modal-actions"><button class="btn" onclick="document.getElementById('achieveModal').classList.remove('open')">Закрыть</button></div></div>
-</div>
-
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
 <script>
-// ==========================================
-// ИНТЕГРАЦИЯ С TELEGRAM
-// ==========================================
+// 1. ПЕРЕМЕННЫЕ
 const tg = window.Telegram?.WebApp;
 let tgHaptic = null;
+const CHEST_CD = 4*3600*1000;
+const todayStr=(d=new Date())=>{const z=n=>String(n).padStart(2,'0');return`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`};
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():'id-'+Math.random().toString(36).slice(2)+Date.now());
+const KEY='focusflow_v1';
 
-if (tg) {
-  tg.ready();
-  tg.expand();
-  tgHaptic = tg.HapticFeedback;
-  
-  // Настраиваем цвета под тему Telegram (чтобы выглядело нативно)
-  const p = tg.themeParams;
-  if (p.bg_color) document.documentElement.style.setProperty('--bg', p.bg_color);
-  if (p.text_color) document.documentElement.style.setProperty('--text', p.text_color);
-  if (p.secondary_bg_color) document.documentElement.style.setProperty('--bg-elev', p.secondary_bg_color);
-  if (p.hint_color) document.documentElement.style.setProperty('--text-muted', p.hint_color);
-  if (p.button_color) document.documentElement.style.setProperty('--accent', p.button_color);
-  
-  // Кнопка "Назад" на телефоне (закрывает модалки, а не приложение)
-  tg.BackButton.onClick(() => {
-    let closed = false;
-    document.querySelectorAll('.modal-backdrop.open').forEach(m => {
-      m.classList.remove('open');
-      closed = true;
-    });
-    if (!closed) tg.close();
-  });
-  
-  // Следим за открытием модалок, чтобы показывать кнопку "Назад"
-  const observer = new MutationObserver(() => {
-    const hasOpenModal = document.querySelector('.modal-backdrop.open');
-    if (hasOpenModal) tg.BackButton.show();
-    else tg.BackButton.hide();
-  });
-  observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
-}
+const defaultState=()=>({
+  habits:[], sessions:[],
+  settings:{pomodoroMin:25,shortBreakMin:5,longBreakMin:15,activeTheme:'dark',isVip:false,isDev:false,activeSkin:null,activeSound:'classic',activeFrame:null},
+  wallet:{coins:0,spinDate:'',freeClaimedDate:'',unlocked:{themes:['dark','light'],frames:[],skins:[],sounds:['classic']},inventory:{freeze:0},doubleUntil:0,hasChicken:false,eggCount:0,lastEggCollect:0,lastSecretDate:'',lastMysteryDate:'',auctionWeek:'',auctionFakeBid:0,auctionMyBid:0},
+  timerState:{running:false,phase:'focus',endTime:0,habitId:null,remaining:0,focusCount:0},
+  daily:{date:'',quests:[],startCoins:0},
+  chest:{lastOpen:Date.now() - 4*3600*1000}
+});
 
-// Обертка для вибрации (работает в ТГ, откатывается к браузеру вне ТГ)
+const storage=(()=>{
+let state=load();const subs=new Set();
+function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return defaultState();const parsed=JSON.parse(raw);const safe={...defaultState(),...parsed,settings:{...defaultState().settings,...(parsed.settings||{})},wallet:{...defaultState().wallet,...(parsed.wallet||{})},timerState:{...defaultState().timerState,...(parsed.timerState||{})},daily:{...defaultState().daily,...(parsed.daily||{})},chest:{...defaultState().chest,...(parsed.chest||{})}};safe.habits=Array.isArray(safe.habits)?safe.habits:[];safe.sessions=Array.isArray(safe.sessions)?safe.sessions:[];return safe}catch(e){return defaultState()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}subs.forEach(cb=>cb(state))}
+function get(){return state}
+function subscribe(cb){subs.add(cb);cb(state);return()=>subs.delete(cb)}
+function saveSilent(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+return{get,save,subscribe,saveSilent}})();
+
 function haptic(type) {
   if (tgHaptic) {
     if (type === 'success') tgHaptic.notificationOccurred('success');
-    else if (type === 'error') tgHaptic.notificationOccurred('error');
     else tgHaptic.impactOccurred('light');
   } else if (navigator.vibrate) {
     navigator.vibrate(type === 'success' ? [200, 100, 200] : 20);
   }
 }
 
-// ==========================================
-// ЛОГИКА ПРИЛОЖЕНИЯ (не изменена)
-// ==========================================
-const todayStr=(d=new Date())=>{const z=n=>String(n).padStart(2,'0');return`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`};
-const uid=()=>(crypto.randomUUID?crypto.randomUUID():'id-'+Math.random().toString(36).slice(2)+Date.now());
-const KEY='focusflow_v1';
-const defaultState=()=>({habits:[],sessions:[],settings:{pomodoroMin:25,shortBreakMin:5,longBreakMin:15,theme:'dark',isVip:false,isDev:false,activeTheme:'dark'},wallet:{coins:0,inventory:{freeze:0,skipBreak:0},unlocked:{themes:['dark','light'],frames:[]},doubleUntil:0,spinUsed:false},timerState:{running:false,phase:'focus',endTime:0,habitId:null,remaining:0,focusCount:0},daily:{date:'',quests:[]},achievements:{unlocked:[]}});
-const storage=(()=>{
-let state=load();const subs=new Set();
-function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return defaultState();const parsed=JSON.parse(raw);const safe={...defaultState(),...parsed,settings:{...defaultState().settings,...(parsed.settings||{})},wallet:{...defaultState().wallet,...(parsed.wallet||{})},timerState:{...defaultState().timerState,...(parsed.timerState||{})},daily:{...defaultState().daily,...(parsed.daily||{})},achievements:{...defaultState().achievements,...(parsed.achievements||{})}};safe.habits=Array.isArray(safe.habits)?safe.habits:[];safe.sessions=Array.isArray(safe.sessions)?safe.sessions:[];return safe}catch(e){return defaultState()}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}subs.forEach(cb=>cb(state))}
-function get(){return state}
-function subscribe(cb){subs.add(cb);cb(state);return()=>subs.delete(cb)}
-return{get,save,subscribe}})();
-
-// МОНЕТЫ
 const wallet=(()=>{
 const state=()=>storage.get();
-function earn(amount){const w=state().wallet;if(state().settings.isDev)return;let final=amount;if(Date.now()<w.doubleUntil)final*=2;w.coins+=final;storage.save();ui.showCoinFloat(final);checkAchievements()}
+function earn(amount){const w=state().wallet;if(state().settings.isDev)return;let final=amount;if(Date.now()<w.doubleUntil)final*=2;w.coins+=final;storage.save();ui.showCoinFloat(final)}
 function spend(amount){const w=state().wallet;if(state().settings.isDev)return true;if(w.coins<amount)return false;w.coins-=amount;storage.save();return true}
 return{earn,spend}})();
 
-// ПРИВЫЧКИ
 const habits=(()=>{
 const state=()=>storage.get();
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function add({name,icon,color,targetPerDay=1}){const s=state();s.habits.push({id:uid(),name:escapeHtml(name.trim()),icon:escapeHtml((icon||'🎯').slice(0,4)),color,targetPerDay:Math.max(1,+targetPerDay||1),createdAt:todayStr(),archived:false,freezeUsed:[]});storage.save();checkAchievements()}
+function add({name,icon,color,targetPerDay=1}){const s=state();s.habits.push({id:uid(),name:escapeHtml(name.trim()),icon:escapeHtml([...(icon||'🎯')].slice(0,4).join('')),color:/^#[0-9a-f]{6}$/i.test(color)?color:'#6366f1',targetPerDay:Math.max(1,+targetPerDay||1),createdAt:todayStr(),archived:false,freezeUsed:[]});storage.save()}
 function archive(id){const h=state().habits.find(h=>h.id===id);if(h){h.archived=true;storage.save()}}
 function list(){return state().habits.filter(h=>!h.archived)}
 function byId(id){return state().habits.find(h=>h.id===id)}
 function todayCount(id){const t=todayStr();return state().sessions.filter(s=>s.habitId===id&&s.date===t).length}
-function addSession(habitId,durationMin){if(!habitId||!habits.byId(habitId))return;const s=state();s.sessions.push({id:uid(),habitId,date:todayStr(),durationMin,completedAt:Date.now()});storage.save();checkQuests();checkAchievements()}
+function addSession(habitId,durationMin){if(!habitId||!habits.byId(habitId))return;const s=state();s.sessions.push({id:uid(),habitId,date:todayStr(),durationMin,completedAt:Date.now()});storage.save()}
 return{add,archive,list,byId,todayCount,addSession,escapeHtml}})();
 
-// АНАЛИТИКА
 const analytics=(()=>{
 function getStreak(id){const habit=habits.byId(id);if(!habit)return 0;const counts={};storage.get().sessions.filter(s=>s.habitId===id).forEach(s=>counts[s.date]=(counts[s.date]||0)+1);let streak=0,cursor=new Date();if((counts[todayStr(cursor)]||0)<habit.targetPerDay){cursor.setDate(cursor.getDate()-1)}while(true){const key=todayStr(cursor);if((counts[key]||0)>=habit.targetPerDay||(habit.freezeUsed&&habit.freezeUsed.includes(key))){streak++;cursor.setDate(cursor.getDate()-1)}else break}return streak}
 function getStats(){const s=storage.get().sessions;const total=s.length;const min=s.reduce((a,b)=>a+b.durationMin,0);const week={};for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const k=todayStr(d);week[k]=s.filter(x=>x.date===k).length}return{total,min,week}}
 return{getStreak,getStats}})();
 
-// ЗВУК (Безопасный вызов)
-let audioCtx;
-function playSound() {
+// ЗВУК
+function playSound(type) {
   try {
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.type = 'sine'; osc.frequency.value = 880;
-    const now = audioCtx.currentTime;
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(0.5, now + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-    osc.start(now); osc.stop(now + 0.5);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    const presets = {
+      classic: {freq:[880, 1100], dur:0.15, type:'sine'},
+      cat:     {freq:[600, 900],  dur:0.3,  type:'sawtooth'},
+      bit:     {freq:[400, 800],  dur:0.08, type:'square'},
+      bowl:    {freq:[220, 330],  dur:1.2,  type:'sine'},
+      rocket:  {freq:[200, 1200], dur:0.4,  type:'sawtooth'},
+      coin:    {freq:[1200, 1600],dur:0.1,  type:'triangle'},
+    };
+    const p = presets[type] || presets.classic;
+    osc.type = p.type;
+    osc.frequency.setValueAtTime(p.freq[0], ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(p.freq[1], ctx.currentTime + p.dur);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + p.dur);
+    osc.start(); osc.stop(ctx.currentTime + p.dur);
   } catch(e) {}
 }
 
-// ТАЙМЕР
-class PomodoroTimer{
-constructor({onTick,onPhase,onComplete}){this.onTick=onTick;this.onPhase=onPhase;this.onComplete=onComplete;const ts=storage.get().timerState;this.phase=ts.phase||'focus';this.running=false;this.remaining=ts.remaining||this._cfg()[this.phase];this.endTime=0;this.habitId=ts.habitId||null;this.focusCount=ts.focusCount||0;this.interval=null;if(ts.running&&ts.endTime>Date.now()){this.remaining=Math.round((ts.endTime-Date.now())/1000);this.start(this.habitId,true)}this.onTick(this.remaining,this.phase)}
-_cfg(){const s=storage.get().settings;return{focus:s.pomodoroMin*60,shortBreak:Math.round(s.shortBreakMin*60),longBreak:s.longBreakMin*60}}
-_saveState(){const s=storage.get();s.timerState={running:this.running,phase:this.phase,endTime:this.endTime,habitId:this.habitId,remaining:this.remaining,focusCount:this.focusCount};storage.save()}
-_setPhase(phase,silent=false){this.phase=phase;this.remaining=this._cfg()[phase];this.endTime=0;this._saveState();if(!silent)this.onPhase&&this.onPhase(this.phase);this.onTick&&this.onTick(this.remaining,this.phase)}
-start(habitId,isRestore=false){if(this.running)return;if(habitId)this.habitId=habitId;if(this.remaining<=0)this._setPhase(this.phase);if(!isRestore)this.endTime=Date.now()+this.remaining*1000;this.running=true;this._saveState();this.interval=setInterval(()=>this._tick(),250);this._tick()}
-pause(){if(!this.running)return;this.remaining=Math.max(0,Math.round((this.endTime-Date.now())/1000));this.running=false;clearInterval(this.interval);this.interval=null;this._saveState();this.onTick&&this.onTick(this.remaining,this.phase)}
-skip(){this.pause();if(this.phase==='focus')this._advance(true);else{this._setPhase('focus')}}
-_tick(){const left=Math.max(0,Math.round((this.endTime-Date.now())/1000));this.remaining=left;this.onTick&&this.onTick(left,this.phase);if(left<=0){clearInterval(this.interval);this.interval=null;this.running=false;this._advance(false)}}
-_advance(skipped){if(this.phase==='focus'){if(!skipped&&this.habitId){habits.addSession(this.habitId,storage.get().settings.pomodoroMin);this.focusCount++;wallet.earn(10)}this.onComplete&&this.onComplete('focus',skipped);const isLong=(this.focusCount%4===0)&&this.focusCount>0;this._setPhase(isLong?'longBreak':'shortBreak')}else{this.onComplete&&this.onComplete(this.phase,skipped);this._setPhase('focus')}}}
+// ПИТОМЕЦ
+function renderPet() {
+  const s = storage.get();
+  const total = s.sessions.length;
+  const maxStreak = Math.max(...habits.list().map(h => analytics.getStreak(h.id)), 0);
+  const el = document.getElementById('pet');
+  const status = document.getElementById('petStatus');
+  if (!el) return;
+  let icon = '🥚', text = 'Яйцо. Сделай первый помидор!';
+  if (total >= 1)  { icon = '🐣'; text = 'Вылупился! Продолжай.'; }
+  if (total >= 5)  { icon = '🍅'; text = 'Растёт 🍅'; }
+  if (maxStreak >= 3)  { icon = '🍅✨'; text = 'Сияет от стрика!'; }
+  if (maxStreak >= 7)  { icon = '👑🍅'; text = 'Корона за неделю!'; }
+  if (maxStreak >= 30) { icon = '🌟🍅🌟'; text = 'Легендарный помидор!'; }
+  el.textContent = icon;
+  status.textContent = text;
+}
+document.getElementById('pet')?.addEventListener('click', (e) => {
+  e.target.style.transform = 'scale(1.2)';
+  setTimeout(() => e.target.style.transform = 'scale(1)', 200);
+  haptic('impact');
+});
 
 // UI
 const ui=(()=>{
 const $=sel=>document.querySelector(sel);
-const els={timerTime:$('#timerTime'),timerPhase:$('#timerPhase'),ringFg:$('#ringFg'),habitSelect:$('#habitSelect'),habitList:$('#habitList'),coinCount:$('#coinCount'),devBadge:$('#devBadge')};
-const RING=2*Math.PI*54;
-function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
-function renderTimer(remaining,phase){els.timerTime.textContent=fmt(remaining);els.timerPhase.textContent=phase==='focus'?'focus':phase==='shortBreak'?'short break':'long break';const cfg={focus:storage.get().settings.pomodoroMin*60,shortBreak:Math.round(storage.get().settings.shortBreakMin*60),longBreak:storage.get().settings.longBreakMin*60}[phase];els.ringFg.style.strokeDashoffset=RING*(1-(remaining/cfg));document.title=`⏱ ${fmt(remaining)} · FocusFlow`}
-function renderHabits(){const list=habits.list();if(!list.length){els.habitList.innerHTML=`<div class="empty">Добавь первую привычку 👆</div>`;renderSelect();return}els.habitList.innerHTML=list.map(h=>{const done=habits.todayCount(h.id),streak=analytics.getStreak(h.id);return`<div class="habit"><div class="habit-icon" style="background:${h.color}22;color:${h.color}">${h.icon}</div><div class="habit-info"><div class="habit-name">${h.name}</div><div class="habit-meta">${done}/${h.targetPerDay} · 🔥 ${streak}</div></div><button class="icon-btn" data-archive="${h.id}" style="width:28px;height:28px;font-size:.8rem">✕</button></div>`}).join('');renderSelect()}
-function renderSelect(){const current=els.habitSelect.value;els.habitSelect.innerHTML=`<option value="">— выбери привычку —</option>`+habits.list().map(h=>`<option value="${h.id}">${h.icon} ${h.name}</option>`).join('');if(habits.list().some(h=>h.id===current))els.habitSelect.value=current}
-function renderWallet(){const w=storage.get().wallet;els.coinCount.textContent=storage.get().settings.isDev?'∞':w.coins;els.devBadge.hidden=!storage.get().settings.isDev}
+const els={coinCount:$('#coinCount')};
+function renderHabits(){const list=habits.list();const container=document.getElementById('habitList');if(!list.length){container.innerHTML=`<div style="color:var(--text-muted);text-align:center;padding:20px;">Нет привычек</div>`;renderSelect();return}container.innerHTML=list.map(h=>{const done=habits.todayCount(h.id);const streak=analytics.getStreak(h.id);return`<div class="habit"><div class="habit-icon" style="background:${h.color}22;color:${h.color}">${h.icon}</div><div class="habit-info"><div class="habit-name">${h.name}</div><div class="habit-meta">${done}/${h.targetPerDay} · 🔥 ${streak}</div></div><button class="icon-btn" data-archive="${h.id}" title="Удалить" style="width:28px;height:28px">✕</button></div>`}).join('');renderSelect()}
+function renderSelect(){const current=document.getElementById('habitSelect').value;document.getElementById('habitSelect').innerHTML=`<option value="">— выбери привычку —</option>`+habits.list().map(h=>`<option value="${h.id}">${h.icon} ${h.name}</option>`).join('');if(habits.list().some(h=>h.id===current))document.getElementById('habitSelect').value=current}
+function renderWallet(){const w=storage.get().wallet;els.coinCount.textContent=storage.get().settings.isDev?'∞':w.coins;document.getElementById('devBadge').hidden=!storage.get().settings.isDev}
 function showCoinFloat(amount){const rect=els.coinCount.parentElement.getBoundingClientRect();const el=document.createElement('div');el.style.cssText=`position:fixed;font-weight:800;color:#fbbf24;pointer-events:none;z-index:999;left:${rect.left+rect.width/2}px;top:${rect.top+20}px;transform:translateX(-50%);animation:coinUp 1s ease-out forwards;`;el.textContent=`+${amount} 🪙`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
 function showToast(msg){const toast=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3000)}
-els.habitList.addEventListener('click',e=>{const btn=e.target.closest('[data-archive]');if(btn){habits.archive(btn.dataset.archive)}});
+document.getElementById('habitList').addEventListener('click',e=>{const btn=e.target.closest('[data-archive]');if(btn){if(confirm('Удалить привычку?')){habits.archive(btn.dataset.archive)}}});
 document.getElementById('addHabitBtn').addEventListener('click',()=>document.getElementById('modal').classList.add('open'));
 document.getElementById('cancelBtn').addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
-document.getElementById('saveHabitBtn').addEventListener('click',()=>{const name=document.getElementById('hName').value.trim();if(!name)return;habits.add({name,icon:document.getElementById('hIcon').value,color:document.getElementById('hColor').value,targetPerDay:+document.getElementById('hTarget').value});document.getElementById('modal').classList.remove('open')});
-return{els,renderTimer,renderHabits,renderWallet,showCoinFloat,showToast}})();
+document.getElementById('saveHabitBtn').addEventListener('click',()=>{const name=document.getElementById('hName').value.trim();if(!name)return;if(habits.list().some(h=>h.name===name)){showToast('Такая привычка уже есть!');return}habits.add({name,icon:document.getElementById('hIcon').value,color:document.getElementById('hColor').value,targetPerDay:+document.getElementById('hTarget').value});document.getElementById('modal').classList.remove('open')});
+return{els,renderHabits,renderWallet,showCoinFloat,showToast}})();
 
-const timer=new PomodoroTimer({
-  onTick:(r,p)=>ui.renderTimer(r,p),
-  onPhase:p=>{ui.renderTimer(timer.remaining,p);ui.els.startBtn.hidden=timer.running;ui.els.pauseBtn.hidden=!timer.running},
-  onComplete:(phase, skipped)=>{
-    ui.els.startBtn.hidden=false;
-    ui.els.pauseBtn.hidden=true;
-    
-    if(!skipped){
-      playSound(); // Пытаемся включить звук
-      haptic('success'); // Вибрация через Telegram
-      ui.showToast(phase === 'focus' ? '🍅 Помидор готов! Пора отдохнуть.' : '☕ Перерыв окончен! Пора работать.');
-    }
+// СУНДУК
+function updateChestUI() {
+  const s = storage.get();
+  const btn = document.getElementById('chestBtn');
+  const t = document.getElementById('chestTimer');
+  if (!btn) return;
+  const left = (s.chest.lastOpen||0) + CHEST_CD - Date.now();
+  if (left > 0) {
+    btn.disabled = true; btn.style.opacity = '0.5';
+    const h = Math.floor(left/3600000), m = Math.floor(left%3600000/60000), sec = Math.floor(left%60000/1000);
+    t.textContent = `Через ${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  } else {
+    btn.disabled = false; btn.style.opacity = '1';
+    t.textContent = 'Готов к открытию!';
   }
+}
+document.getElementById('chestBtn').addEventListener('click', () => {
+  const s = storage.get();
+  if (Date.now() < (s.chest.lastOpen||0) + CHEST_CD) return ui.showToast('Сундук ещё закрыт!');
+  s.chest.lastOpen = Date.now();
+  const r = [20,30,50,100][Math.floor(Math.random()*4)];
+  wallet.earn(r); haptic('success'); storage.save();
+  ui.showToast(`🎁 Из сундука: ${r} 🪙`); updateChestUI();
 });
 
-storage.subscribe(()=>{ui.renderHabits();ui.renderWallet()});
-ui.renderHabits();ui.renderWallet();ui.renderTimer(timer.remaining,timer.phase);
+// ЗАМОРОЗКА
+window.useFreeze = function() {
+  const s = storage.get(); const h = habits.list()[0];
+  if (!h || (s.wallet.inventory.freeze||0) <= 0) return ui.showToast('Нет заморозок');
+  s.wallet.inventory.freeze--;
+  if (!h.freezeUsed) h.freezeUsed = [];
+  const y = new Date(); y.setDate(y.getDate()-1);
+  h.freezeUsed.push(todayStr(y));
+  storage.save(); ui.showToast('❄️ Заморозка применена!');
+};
 
-// Кнопки таймера (с вибрацией)
-document.getElementById('startBtn').addEventListener('click',()=>{
-  const hId=ui.els.habitSelect.value;
-  if(!hId && timer.phase==='focus') return;
-  haptic('impact'); // Вибрация
-  document.getElementById('startBtn').hidden=true;
-  document.getElementById('pauseBtn').hidden=false;
-  timer.start(hId || timer.habitId);
-});
-document.getElementById('pauseBtn').addEventListener('click',()=>{
-  haptic('impact');
-  timer.pause();
-  document.getElementById('startBtn').hidden=false;
-  document.getElementById('pauseBtn').hidden=true;
-});
-document.getElementById('skipBtn').addEventListener('click',()=>{
-  haptic('impact');
-  timer.skip();
-  document.getElementById('startBtn').hidden=false;
-  document.getElementById('pauseBtn').hidden=true;
-});
+// КВЕСТЫ
+const QUEST_POOL=[{id:'f1',text:'Заверши 1 помидор',target:1,type:'pomo',reward:10,tier:1},{id:'f3',text:'Заверши 3 помидора',target:3,type:'pomo',reward:30,tier:1},{id:'h1',text:'Заверши 1 привычку',target:1,type:'habit',reward:40,tier:1},{id:'f5',text:'Заверши 5 помидоров',target:5,type:'pomo',reward:60,tier:2},{id:'h2',text:'Заверши 2 привычки',target:2,type:'habit',reward:80,tier:2},{id:'e100',text:'Заработай 100 монет',target:100,type:'earn',reward:50,tier:2},{id:'f10',text:'Заверши 10 помидоров',target:10,type:'pomo',reward:150,tier:3},{id:'s7',text:'Достигни стрика 7',target:7,type:'streak',reward:250,tier:3}];
+let _inCheck=false;
+function generateDailyQuests(){const s=storage.get();const t1=QUEST_POOL.filter(q=>q.tier===1);const t2=QUEST_POOL.filter(q=>q.tier===2);const t3=QUEST_POOL.filter(q=>q.tier===3);const pick=arr=>arr[Math.floor(Math.random()*arr.length)];s.daily.quests=[{...pick(t1),progress:0,claimed:false},{...pick(t2),progress:0,claimed:false},{...pick(t3),progress:0,claimed:false}];s.daily.date=todayStr();s.daily.startCoins=s.wallet.coins;storage.save()}
+if(!storage.get().daily.date||storage.get().daily.date!==todayStr()){generateDailyQuests()}
+function checkQuests(){
+  if(_inCheck)return;
+  _inCheck=true;
+  const s=storage.get();
+  const todaySessions=s.sessions.filter(x=>x.date===todayStr());
+  const todayHabits=new Set(todaySessions.map(x=>x.habitId)).size;
+  const maxStreak=Math.max(...habits.list().map(h=>analytics.getStreak(h.id)),0);
+  s.daily.quests.forEach(q=>{
+    if(q.claimed)return;
+    if(q.type==='pomo')q.progress=todaySessions.length;
+    else if(q.type==='habit')q.progress=todayHabits;
+    else if(q.type==='earn')q.progress=Math.max(0,s.wallet.coins-(s.daily.startCoins||0));
+    else if(q.type==='streak')q.progress=todaySessions.length>0?maxStreak:0;
+  });
+  _inCheck=false;
+  storage.saveSilent();
+}
+window.skipQuest=function(id){const s=storage.get();const idx=s.daily.quests.findIndex(q=>q.id===id);if(idx===-1)return;if(s.wallet.coins<20)return ui.showToast('Недостаточно монет!');wallet.spend(20);const q=s.daily.quests[idx];const pool=QUEST_POOL.filter(x=>x.tier===q.tier&&!s.daily.quests.some(y=>y.id===x.id));const newQuest=pool[Math.floor(Math.random()*pool.length)]||QUEST_POOL[0];s.daily.quests[idx]={...newQuest,progress:0,claimed:false};storage.save();renderQuests();ui.showToast('Квест заменен!')};
+window.claimQuest=function(id){const s=storage.get();const q=s.daily.quests.find(x=>x.id===id);if(q&&q.progress>=q.target&&!q.claimed){q.claimed=true;wallet.earn(q.reward);checkQuests();storage.save();renderQuests();ui.showToast('Награда получена!');haptic('success')}};
+function renderQuests(){const s=storage.get();let html='';s.daily.quests.forEach(q=>{const pct=Math.min(100,((q.progress||0)/q.target)*100);html+=`<div class="quest-item"><div class="quest-info"><div class="quest-title">${q.text}</div><div class="quest-progress-text">${q.progress||0} / ${q.target} · 🪙 ${q.reward}</div><div style="background:var(--bg);height:6px;border-radius:3px;margin-top:6px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:var(--accent);"></div></div></div><div class="quest-actions">${q.claimed?`<button class="btn" disabled style="color:var(--success)">✓ Готово</button>`:(q.progress||0)>=q.target?`<button class="btn btn-primary" onclick="claimQuest('${q.id}')">Забрать</button>`:`<button class="btn btn-skip" ${s.wallet.coins>=20?'':'disabled'} onclick="skipQuest('${q.id}')">🔄 -20🪙</button>`}</div></div>`});document.getElementById('questsContent').innerHTML=html}
+document.getElementById('questsBtn').addEventListener('click',()=>{checkQuests();renderQuests();document.getElementById('questsModal').classList.add('open')});
 
 // МАГАЗИН
-const SHOP_ITEMS=[{id:'theme_light',name:'Светлая',icon:'☀️',price:150,type:'theme',payload:'light',desc:'Дневной режим'},{id:'theme_emerald',name:'Изумрудная',icon:'🟢',price:200,type:'theme',payload:'emerald',desc:'Зелёный дизайн'},{id:'theme_rose',name:'Розовая',icon:'🌸',price:200,type:'theme',payload:'rose',desc:'Нежный дизайн'},{id:'freeze',name:'Заморозка',icon:'❄️',price:150,type:'consumable',payload:'freeze',desc:'Спасает стрик'},{id:'double',name:'x2 Монеты',icon:'⚡',price:250,type:'effect',payload:'double',desc:'Удвоение на 1 час'}];
-document.getElementById('shopBtn').addEventListener('click',()=>{document.getElementById('shopCoins').textContent=storage.get().settings.isDev?'∞':storage.get().wallet.coins;renderShop('all');document.getElementById('shopModal').classList.add('open')});
-function renderShop(tab){const w=storage.get().wallet;const grid=document.getElementById('shopGrid');const currentTheme=storage.get().settings.activeTheme||'dark';document.querySelectorAll('.shop-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));const filtered=SHOP_ITEMS.filter(i=>tab==='all'||i.type===tab);grid.innerHTML=filtered.map(item=>{const isTheme=item.type==='theme';const owned=(isTheme&&w.unlocked.themes.includes(item.payload));const qty=item.type==='consumable'?(w.inventory[item.payload]||0):0;let actionHTML='';if(owned){if(isTheme&&currentTheme===item.payload){actionHTML=`<button class="btn" disabled style="color:var(--success);border-color:var(--success)">✓ Активна</button>`}else if(isTheme){actionHTML=`<button class="btn btn-primary" data-use="${item.payload}">Использовать</button>`}else{actionHTML=`<div style="color:var(--success);font-size:.8rem;font-weight:700">✓ Есть</div>`}}else{const canAfford=storage.get().settings.isDev||w.coins>=item.price;actionHTML=`<div class="shop-item-price">🪙 ${item.price}</div><button class="btn ${canAfford?'btn-primary':''}" ${canAfford?'':'disabled'} data-buy="${item.id}">${canAfford?'Купить':'Мало'}</button>`}return`<div class="shop-item ${owned?'owned':''}">${qty>0?`<div class="shop-qty">x${qty}</div>`:''}<div class="shop-item-icon">${item.icon}</div><div class="shop-item-name">${item.name}</div><div class="shop-item-desc">${item.desc}</div>${actionHTML}</div>`}).join('')}
-document.querySelectorAll('.shop-tab').forEach(t=>{t.addEventListener('click',e=>renderShop(e.target.dataset.tab))});
-document.getElementById('shopGrid').addEventListener('click',e=>{const buyBtn=e.target.closest('[data-buy]');if(buyBtn){const item=SHOP_ITEMS.find(i=>i.id===buyBtn.dataset.buy);if(!item)return;if(wallet.spend(item.price)){const w=storage.get().wallet;if(item.type==='theme')w.unlocked.themes.push(item.payload);if(item.type==='consumable')w.inventory[item.payload]=(w.inventory[item.payload]||0)+1;if(item.type==='effect')w.doubleUntil=Date.now()+3600000;storage.save();ui.showToast(`Куплено: ${item.name}`);haptic('success');document.getElementById('shopBtn').click()}return}const useBtn=e.target.closest('[data-use]');if(useBtn){const theme=useBtn.dataset.use;storage.get().settings.activeTheme=theme;document.documentElement.dataset.theme=theme;storage.save();ui.showToast('Тема применена!');document.getElementById('shopBtn').click()}});
+const THEMES = [
+  {id:'theme_light',name:'Светлая',icon:'☀️',price:150,type:'theme',payload:'light',desc:'Дневной режим'},
+  {id:'theme_emerald',name:'Изумрудная',icon:'🟢',price:200,type:'theme',payload:'emerald',desc:'Зелёный дизайн'},
+  {id:'theme_rose',name:'Розовая',icon:'🌸',price:200,type:'theme',payload:'rose',desc:'Нежный дизайн'},
+  {id:'theme_ocean',name:'Океан',icon:'🌊',price:250,type:'theme',payload:'ocean',desc:'Морской бриз'},
+  {id:'theme_sunset',name:'Закат',icon:'🌅',price:300,type:'theme',payload:'sunset',desc:'Оранжевый вечер'},
+  {id:'theme_forest',name:'Лес',icon:'🌲',price:300,type:'theme',payload:'forest',desc:'Тёмно-зелёный'},
+  {id:'theme_candy',name:'Карамель',icon:'🍬',price:350,type:'theme',payload:'candy',desc:'Яркий розовый'},
+  {id:'theme_space',name:'Космос',icon:'🌌',price:500,type:'theme',payload:'space',desc:'Звёздное небо ✨'},
+  {id:'theme_tomato',name:'Помидорная',icon:'🍅',price:600,type:'theme',payload:'tomato',desc:'Красная классика'},
+  {id:'theme_cat',name:'Котики',icon:'🐱',price:800,type:'theme',payload:'cat',desc:'Лапки на фоне'},
+  {id:'theme_rainbow',name:'Радуга',icon:'🌈',price:1200,type:'theme',payload:'rainbow',desc:'Анимированный градиент'},
+  {id:'theme_gold',name:'Золото',icon:'👑',price:2000,type:'theme',payload:'gold',desc:'Только для VIP'}
+];
+const BOOSTERS = [
+  {id:'freeze',name:'Заморозка',icon:'❄️',price:150,type:'consumable',payload:'freeze',desc:'Спасает стрик 1 день'},
+  {id:'skipBreak',name:'Пропуск перерыва',icon:'⏭',price:50,type:'consumable',payload:'skipBreak',desc:'Сразу к работе'},
+  {id:'double',name:'x2 Монеты',icon:'⚡',price:250,type:'effect',payload:'double',desc:'Удвоение на 1 час'},
+  {id:'double3',name:'x3 Монеты',icon:'⚡⚡',price:500,type:'effect',payload:'triple',desc:'Тройное на 30 мин'},
+  {id:'shield',name:'Щит стрика',icon:'🛡️',price:300,type:'consumable',payload:'shield',desc:'Защита на 3 дня'},
+  {id:'rerollQuest',name:'Ре-ролл квеста',icon:'🔄',price:80,type:'consumable',payload:'reroll',desc:'Новый квест'},
+  {id:'fastChest',name:'Ускоритель',icon:'⏰',price:100,type:'consumable',payload:'fastChest',desc:'Сундук сразу'},
+  {id:'energy',name:'Эликсир',icon:'🧪',price:150,type:'consumable',payload:'energy',desc:'+5 помидоров без сессии'}
+];
+const SKINS = [
+  {id:'skin_pulse',name:'Пульс',icon:'💓',price:200,type:'skin',payload:'pulse',desc:'Пульсирующее кольцо'},
+  {id:'skin_glow',name:'Свечение',icon:'✨',price:250,type:'skin',payload:'glow',desc:'Мягкое свечение'},
+  {id:'skin_dashed',name:'Пунктир',icon:'⋯',price:150,type:'skin',payload:'dashed',desc:'Пунктирное кольцо'},
+  {id:'skin_rainbow',name:'Радужное',icon:'🌈',price:600,type:'skin',payload:'rainbow',desc:'Переливается'},
+  {id:'skin_fire',name:'Огонь',icon:'🔥',price:800,type:'skin',payload:'fire',desc:'Пылает во время фокуса'}
+];
+const SOUNDS = [
+  {id:'sound_classic',name:'Классик',icon:'🔔',price:0,type:'sound',payload:'classic',desc:'Базовый beep'},
+  {id:'sound_cat',name:'Мяу',icon:'🐱',price:150,type:'sound',payload:'cat',desc:'Кот мяукает'},
+  {id:'sound_bit',name:'8-bit',icon:'🎮',price:200,type:'sound',payload:'bit',desc:'Ретро-звук'},
+  {id:'sound_bowl',name:'Поющий bowl',icon:'🧘',price:300,type:'sound',payload:'bowl',desc:'Медитация'},
+  {id:'sound_rocket',name:'Взлёт',icon:'🚀',price:250,type:'sound',payload:'rocket',desc:'Звук ракеты'},
+  {id:'sound_coin',name:'Монетка',icon:'🪙',price:200,type:'sound',payload:'coin',desc:'Дзынь монет'}
+];
+const FRAMES = [
+  {id:'frame_bronze',name:'Бронза',icon:'🥉',price:100,type:'frame',payload:'bronze'},
+  {id:'frame_silver',name:'Серебро',icon:'🥈',price:300,type:'frame',payload:'silver'},
+  {id:'frame_gold',name:'Золото',icon:'🥇',price:700,type:'frame',payload:'gold'},
+  {id:'frame_diamond',name:'Алмаз',icon:'💎',price:1500,type:'frame',payload:'diamond'},
+  {id:'frame_fire',name:'Огонь',icon:'🔥',price:1000,type:'frame',payload:'fire'},
+  {id:'frame_crown',name:'Корона',icon:'👑',price:2000,type:'frame',payload:'crown'}
+];
+const SPECIAL = [
+  {id:'lootbox',name:'Загадочное яйцо',icon:'🥚',price:300,type:'lootbox',desc:'Рандомный приз!'},
+  {id:'luckybox',name:'Редкое яйцо',icon:'💎',price:800,type:'lootbox',desc:'Только редкие призы'},
+  {id:'vip_pack',name:'VIP Пакет',icon:'👑',price:1000,type:'vip',desc:'Все темы + VIP'}
+];
+const ALL_SHOP_ITEMS = [...THEMES, ...BOOSTERS, ...SKINS, ...SOUNDS, ...FRAMES, ...SPECIAL];
+
+let dailyDiscountItem = null;
+let dailyFreeItem = null;
+let dailyCoupon = null;
+
+function initShop() {
+  const s = storage.get();
+  const seed = todayStr().split('-').join('');
+  const num = parseInt(seed) || 1;
+  const available = ALL_SHOP_ITEMS.filter(i => !(i.type === 'theme' && s.wallet.unlocked.themes.includes(i.payload)) && !(i.type === 'vip' && s.settings.isVip));
+  const base = available[num % available.length] || ALL_SHOP_ITEMS[0];
+  dailyDiscountItem = { ...base, originalPrice: base.price, price: Math.floor(base.price/2), isDiscount: true };
+  const FREE_POOL = [{type:'coins', amount:20}, {type:'coins', amount:30}, {type:'coins', amount:50}, {type:'freeze', amount:1}];
+  dailyFreeItem = FREE_POOL[num % FREE_POOL.length];
+  // Купон
+  if (s.wallet.couponDate === todayStr()) { dailyCoupon = s.wallet.coupon || null; }
+  else {
+    const discounts = [10, 15, 20, 30, 50];
+    const discount = discounts[Math.floor(Math.random() * discounts.length)];
+    const item = ALL_SHOP_ITEMS[Math.floor(Math.random() * ALL_SHOP_ITEMS.length)];
+    dailyCoupon = { itemId: item.id, discount, name: item.name };
+    s.wallet.couponDate = todayStr();
+    s.wallet.coupon = dailyCoupon;
+    storage.save();
+  }
+}
+
+function updateShop() {
+  const s = storage.get();
+  document.getElementById('shopCoins').textContent = s.settings.isDev ? '∞' : s.wallet.coins;
+  const activeTab = document.querySelector('.shop-tab.active')?.dataset.tab || 'all';
+  renderLiveShop(activeTab);
+}
+
+function renderLiveShop(tab) {
+  const s = storage.get();
+  const w = s.wallet;
+  const grid = document.getElementById('shopGrid');
+  const currentTheme = s.settings.activeTheme || 'dark';
+  let html = '';
+  
+  // Купон дня
+  if (dailyCoupon) {
+    html += `<div style="grid-column:1/-1;background:linear-gradient(135deg,rgba(251,191,36,.1),transparent);border:1px solid #fbbf24;border-radius:12px;padding:10px;margin-bottom:10px;text-align:center;animation:pulse 2s infinite;">
+      <div style="font-size:.8rem;color:#fbbf24;font-weight:700;">🎟️ КУПОН ДНЯ: -${dailyCoupon.discount}% на «${dailyCoupon.name}»</div>
+      <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px;">⏳ Действует только сегодня</div>
+    </div>`;
+  }
+  
+  // Скидка дня
+  if (dailyDiscountItem) {
+    html += `<div style="grid-column:1/-1;background:linear-gradient(135deg,rgba(251,191,36,.1),transparent);border:1px solid #fbbf24;border-radius:12px;padding:10px;margin-bottom:10px;text-align:center;animation:pulse 2s infinite;">
+      <div style="font-size:.8rem;color:#fbbf24;font-weight:700;">🔥 СКИДКА ДНЯ</div>
+      <div style="font-size:2rem;margin:5px 0;">${dailyDiscountItem.icon}</div>
+      <div style="font-weight:600;">${dailyDiscountItem.name}</div>
+      <div style="font-size:.8rem;color:var(--text-muted);text-decoration:line-through;">${dailyDiscountItem.originalPrice} 🪙</div>
+      <button class="btn btn-primary" style="margin-top:5px;padding:8px;" onclick="buyItem('${dailyDiscountItem.id}', ${dailyDiscountItem.price})">Купить за ${dailyDiscountItem.price} 🪙</button>
+    </div>`;
+  }
+  
+  // Бесплатно
+  if (s.wallet.freeClaimedDate !== todayStr()) {
+    const freeIcon = dailyFreeItem.type === 'coins' ? '🪙' : '❄️';
+    const freeText = dailyFreeItem.type === 'coins' ? `${dailyFreeItem.amount} монет` : 'Заморозка';
+    html += `<div style="grid-column:1/-1;background:rgba(52,211,153,.1);border:1px solid #34d399;border-radius:12px;padding:10px;margin-bottom:10px;text-align:center;">
+      <div style="font-size:.8rem;color:#34d399;font-weight:700;">🎁 БЕСПЛАТНО СЕГОДНЯ</div>
+      <div style="font-size:2rem;margin:5px 0;">${freeIcon}</div>
+      <div style="font-weight:600;">${freeText}</div>
+      <button class="btn btn-primary" style="margin-top:5px;padding:8px;background:#34d399;" onclick="claimFree()">Забрать</button>
+    </div>`;
+  }
+  
+  // Аукцион
+  const weekKey = `${new Date().getFullYear()}-W${Math.ceil((new Date().getDate()) / 7)}`;
+  if (w.auctionWeek !== weekKey) {
+    w.auctionWeek = weekKey;
+    w.auctionItem = AUCTION_ITEMS[new Date().getMonth() % AUCTION_ITEMS.length];
+    w.auctionFakeBid = 500 + Math.floor(Math.random() * 1500);
+    w.auctionMyBid = 0;
+    storage.saveSilent();
+  }
+  if (w.auctionItem) {
+    html += `<div style="grid-column:1/-1;background:linear-gradient(135deg,rgba(251,191,36,.1),transparent);border:1px solid #fbbf24;border-radius:12px;padding:12px;margin-bottom:10px;text-align:center;">
+      <div style="font-size:.8rem;color:#fbbf24;font-weight:700;">🏆 АУКЦИОН НЕДЕЛИ</div>
+      <div style="font-size:2rem;margin:6px 0;">${w.auctionItem.icon}</div>
+      <div style="font-weight:600;">${w.auctionItem.name}</div>
+      <div style="font-size:.8rem;color:var(--text-muted);">${w.auctionItem.desc}</div>
+      <div style="font-size:.85rem;margin:8px 0;">Текущая ставка: <b>${w.auctionFakeBid} 🪙</b></div>
+      <button class="btn btn-primary" onclick="placeBid(${w.auctionFakeBid + 100})">Перебить за ${w.auctionFakeBid + 100} 🪙</button>
+    </div>`;
+  }
+  
+  // Тайный предмет
+  if (w.lastSecretDate !== todayStr()) {
+    html += `<div class="shop-item" style="border:2px dashed #a855f7;background:linear-gradient(135deg,rgba(168,85,247,.1),transparent)">
+      <div class="shop-item-icon" style="animation:pulse 2s infinite">❓</div>
+      <div class="shop-item-name">Тайный предмет</div>
+      <div class="shop-item-desc">Что-то внутри...</div>
+      <button class="btn btn-primary" onclick="openSecret()">Открыть за 200 🪙</button>
+    </div>`;
+  }
+  
+  // Курица
+  if (w.hasChicken) {
+    html += `<div class="shop-item" style="border-color:#f59e0b">
+      <div class="shop-item-icon">🐔</div>
+      <div class="shop-item-name">Курица-банк</div>
+      <div class="shop-item-price">x${w.eggCount || 0} / 50 🥚</div>
+      <button class="btn btn-primary" onclick="collectEggs()">Собрать</button>
+    </div>`;
+  } else {
+    html += `<div class="shop-item">
+      <div class="shop-item-icon">🐔</div>
+      <div class="shop-item-name">Курица-банк</div>
+      <div class="shop-item-desc">1 🪙/час, макс 50</div>
+      <div class="shop-item-price">🪙 500</div>
+      <button class="btn btn-primary" onclick="buyChicken()">Купить</button>
+    </div>`;
+  }
+  
+  // Кот в мешке
+  html += `<div class="shop-item">
+    <div class="shop-item-icon">🎁</div>
+    <div class="shop-item-name">Кот в мешке</div>
+    <div class="shop-item-desc">Абсолютно рандом</div>
+    <div class="shop-item-price">🪙 100</div>
+    <button class="btn btn-primary" onclick="buyMystery()">Купить</button>
+  </div>`;
+  
+  // VIP
+  if (!s.settings.isVip) {
+    html += `<div class="shop-item">
+      <div class="shop-item-icon">👑</div>
+      <div class="shop-item-name">VIP Пакет</div>
+      <div class="shop-item-desc">Все темы + VIP статус</div>
+      <div class="shop-item-price">🪙 1000</div>
+      <button class="btn btn-primary" onclick="buyItem('vip_pack', 1000)">Купить</button>
+    </div>`;
+  }
+  
+  // Обычные предметы по табу
+  let filtered = ALL_SHOP_ITEMS;
+  if (tab === 'theme') filtered = THEMES;
+  else if (tab === 'consumable') filtered = BOOSTERS;
+  else if (tab === 'skin') filtered = SKINS;
+  else if (tab === 'sound') filtered = SOUNDS;
+  else if (tab === 'frame') filtered = FRAMES;
+  
+  const gridHTML = filtered.map(item => {
+    const isTheme = item.type === 'theme';
+    const owned = isTheme && w.unlocked.themes.includes(item.payload);
+    const isVip = item.type === 'vip' && s.settings.isVip;
+    const price = item.price;
+    const canAfford = s.settings.isDev || w.coins >= price;
+    let actionHTML = '';
+    if (owned || isVip) {
+      if (isTheme && currentTheme === item.payload) {
+        actionHTML = `<button class="btn" disabled style="color:var(--success);border-color:var(--success)">✓ Активна</button>`;
+      } else if (isTheme) {
+        actionHTML = `<button class="btn btn-primary" onclick="applyTheme('${item.payload}')">Применить</button>`;
+      } else if (isVip) {
+        actionHTML = `<button class="btn" disabled style="color:var(--success);border-color:var(--success)">✓ Куплено</button>`;
+      } else {
+        actionHTML = `<div style="color:var(--success);font-size:.8rem;font-weight:700">✓ Есть</div>`;
+      }
+    } else if (item.type === 'consumable' && (w.inventory[item.payload]||0) > 0) {
+       actionHTML = `<div class="shop-item-price">x${w.inventory[item.payload]}</div><button class="btn btn-primary" onclick="useFreeze()">Использовать</button>`;
+    } else {
+      actionHTML = `<div class="shop-item-price">🪙 ${price}</div>
+        <button class="btn ${canAfford ? 'btn-primary' : ''}" ${canAfford ? '' : 'disabled'} onclick="buyItem('${item.id}', ${price})">${canAfford ? 'Купить' : 'Мало'}</button>`;
+    }
+    return `<div class="shop-item ${owned||isVip ? 'owned' : ''}">
+      <div class="shop-item-icon">${item.icon}</div>
+      <div class="shop-item-name">${item.name}</div>
+      <div class="shop-item-desc">${item.desc || ''}</div>
+      ${actionHTML}
+    </div>`;
+  }).join('');
+  
+  grid.innerHTML = html + gridHTML;
+}
+
+const AUCTION_ITEMS = [
+  {name:'Золотой помидор', icon:'🏆', desc:'Редчайший скин'},
+  {name:'Корона фокуса', icon:'👑', desc:'Только для сильнейших'},
+  {name:'Пламя', icon:'🔥', desc:'Анимированный скин'}
+];
+
+function placeBid(amount) {
+  const s = storage.get();
+  if (s.wallet.coins < amount) return ui.showToast('Мало монет');
+  if (amount <= s.wallet.auctionFakeBid) return ui.showToast('Ставка должна быть выше');
+  wallet.spend(amount);
+  s.wallet.auctionMyBid = amount;
+  s.wallet.auctionFakeBid = amount + 50 + Math.floor(Math.random() * 200);
+  storage.save();
+  ui.showToast(`🎯 Ставка ${amount} принята!`);
+  updateShop();
+}
+
+window.openSecret = function() {
+  const s = storage.get();
+  if (s.wallet.lastSecretDate === todayStr()) return ui.showToast('Уже открыто сегодня!');
+  if (!wallet.spend(200)) return;
+  s.wallet.lastSecretDate = todayStr();
+  const win = Math.random();
+  if (win < 0.02) { wallet.earn(2000); ui.showToast('🎉 ДЖЕКПОТ 2000!'); }
+  else if (win < 0.15) { s.wallet.inventory.freeze = (s.wallet.inventory.freeze||0) + 1; ui.showToast('🎁 Заморозка!'); }
+  else if (win < 0.40) { s.wallet.unlocked.themes.push('space'); ui.showToast('🎁 Тема «Космос»!'); }
+  else if (win < 0.70) { wallet.earn(300); ui.showToast('🎁 300 монет!'); }
+  else { wallet.earn(100); ui.showToast('🎁 100 монет'); }
+  storage.save();
+  updateShop();
+};
+
+window.buyChicken = function() {
+  if (!wallet.spend(500)) return;
+  const s = storage.get();
+  s.wallet.hasChicken = true;
+  s.wallet.lastEggCollect = Date.now();
+  storage.save();
+  ui.showToast('🐔 Курица куплена!');
+  updateShop();
+};
+window.collectEggs = function() {
+  const s = storage.get();
+  if ((s.wallet.eggCount || 0) === 0) return ui.showToast('Курица ещё не снеслась');
+  wallet.earn(s.wallet.eggCount);
+  ui.showToast(`🥚 Собрано: ${s.wallet.eggCount} 🪙`);
+  s.wallet.eggCount = 0;
+  s.wallet.lastEggCollect = Date.now();
+  storage.save();
+  updateShop();
+};
+setInterval(() => {
+  const s = storage.get();
+  if (s.wallet.hasChicken) {
+    const hours = Math.floor((Date.now() - (s.wallet.lastEggCollect || Date.now())) / 3600000);
+    if (hours > 0) {
+      s.wallet.eggCount = Math.min(50, (s.wallet.eggCount || 0) + hours);
+      s.wallet.lastEggCollect = Date.now() - ((Date.now() - (s.wallet.lastEggCollect || Date.now())) % 3600000);
+      storage.saveSilent();
+      if (document.getElementById('shopModal')?.classList.contains('open')) updateShop();
+    }
+  }
+}, 60000);
+
+window.buyMystery = function() {
+  if (!wallet.spend(100)) return;
+  const s = storage.get();
+  const win = Math.random();
+  if (win < 0.03) { wallet.earn(1000); ui.showToast('🎉 ДЖЕКПОТ 1000!'); }
+  else if (win < 0.10) { s.wallet.inventory.freeze = (s.wallet.inventory.freeze||0) + 1; ui.showToast('🎁 Заморозка!'); }
+  else if (win < 0.25) { wallet.earn(300); ui.showToast('🎁 300 монет!'); }
+  else if (win < 0.40) { wallet.earn(100); ui.showToast('🎁 100 монет'); }
+  else if (win < 0.55) { ui.showToast('🪨 Камень (просто камень)'); }
+  else if (win < 0.70) { ui.showToast('🦆 Утка (кря)'); }
+  else if (win < 0.85) { ui.showToast('🌫️ Ничего. Совсем.'); }
+  else { wallet.earn(50); ui.showToast('🎁 50 монет'); }
+  storage.save();
+  updateShop();
+};
+
+window.buyItem = function(id, price) {
+  const item = ALL_SHOP_ITEMS.find(i => i.id === id);
+  if (!item) return;
+  const s = storage.get();
+  if (item.type === 'vip' && s.settings.isVip) return ui.showToast('VIP уже куплен!');
+  if (wallet.spend(price)) {
+    const w = s.wallet;
+    if (item.type === 'theme') {
+      if (!w.unlocked.themes.includes(item.payload)) w.unlocked.themes.push(item.payload);
+      s.settings.activeTheme = item.payload;
+      document.documentElement.dataset.theme = item.payload;
+      ui.showToast(`Куплено и применено: ${item.name}`);
+    } else if (item.type === 'consumable') {
+      w.inventory[item.payload] = (w.inventory[item.payload]||0) + 1;
+      ui.showToast(`Куплено: ${item.name}`);
+    } else if (item.type === 'effect') {
+      w.doubleUntil = Date.now() + (item.payload === 'triple' ? 1800000 : 3600000);
+      ui.showToast(`Активирован эффект: ${item.name}`);
+    } else if (item.type === 'skin') {
+      if (!w.unlocked.skins.includes(item.payload)) w.unlocked.skins.push(item.payload);
+      s.settings.activeSkin = item.payload;
+      applySkin(item.payload);
+      ui.showToast(`Скин применён: ${item.name}`);
+    } else if (item.type === 'sound') {
+      if (!w.unlocked.sounds.includes(item.payload)) w.unlocked.sounds.push(item.payload);
+      s.settings.activeSound = item.payload;
+      ui.showToast(`Звук выбран: ${item.name}`);
+    } else if (item.type === 'frame') {
+      if (!w.unlocked.frames.includes(item.payload)) w.unlocked.frames.push(item.payload);
+      s.settings.activeFrame = item.payload;
+      applyFrame(item.payload);
+      ui.showToast(`Рамка применена: ${item.name}`);
+    } else if (item.type === 'lootbox') {
+      const win = Math.random();
+      if (win < 0.05) { wallet.earn(500); ui.showToast('🎉 ДЖЕКПОТ! 500 монет!'); }
+      else if (win < 0.25) { w.inventory.freeze = (w.inventory.freeze || 0) + 1; ui.showToast('🎉 Выпала заморозка!'); }
+      else if (win < 0.6) { wallet.earn(100); ui.showToast('🎉 100 монет!'); }
+      else { ui.showToast('😢 Пусто...'); }
+    } else if (item.type === 'vip') {
+      s.settings.isVip = true;
+      THEMES.forEach(t => { if (!w.unlocked.themes.includes(t.payload)) w.unlocked.themes.push(t.payload); });
+      ui.showToast('👑 VIP! Все темы открыты в магазине.');
+    }
+    storage.save();
+    haptic('success');
+    updateShop();
+  }
+};
+
+function applySkin(skin) {
+  const wrap = document.getElementById('ringWrap');
+  wrap.className = 'ring-wrap';
+  if (skin && skin !== 'none') wrap.classList.add('skin-' + skin);
+}
+function applyFrame(frame) {
+  document.body.className = frame ? 'frame-' + frame : '';
+}
+
+window.applyTheme = function(theme) {
+  const s = storage.get();
+  s.settings.activeTheme = theme;
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.removeProperty('--accent');
+  if (theme === 'dark' && tg?.themeParams?.button_color) {
+    document.documentElement.style.setProperty('--accent', tg.themeParams.button_color);
+  }
+  storage.save();
+  ui.showToast('Тема применена!');
+  updateShop();
+};
+window.claimFree = function() {
+  const s = storage.get();
+  if (s.wallet.freeClaimedDate === todayStr()) return;
+  s.wallet.freeClaimedDate = todayStr();
+  if (dailyFreeItem.type === 'coins') wallet.earn(dailyFreeItem.amount);
+  else if (dailyFreeItem.type === 'freeze') s.wallet.inventory.freeze = (s.wallet.inventory.freeze||0) + 1;
+  ui.showToast(`Забрано!`);
+  haptic('success');
+  storage.save();
+  updateShop();
+};
+document.getElementById('shopBtn').addEventListener('click', () => {
+  initShop();
+  updateShop();
+  document.getElementById('shopModal').classList.add('open');
+});
 document.getElementById('closeShopBtn').addEventListener('click',()=>document.getElementById('shopModal').classList.remove('open'));
+document.getElementById('topCloseShopBtn').addEventListener('click',()=>document.getElementById('shopModal').classList.remove('open'));
+document.querySelectorAll('.shop-tab').forEach(t => {
+  t.addEventListener('click', (e) => {
+    document.querySelectorAll('.shop-tab').forEach(tab => tab.classList.remove('active'));
+    e.target.classList.add('active');
+    renderLiveShop(e.target.dataset.tab);
+  });
+});
+
+// ТАЙМЕР
+class PomodoroTimer{
+constructor(){const ts=storage.get().timerState;this.phase=ts.phase||'focus';this.running=false;this.remaining=ts.remaining||this._cfg()[this.phase];this.endTime=0;this.habitId=ts.habitId||null;this.focusCount=ts.focusCount||0;this.startDuration=0;this.interval=null;if(ts.running&&ts.endTime>Date.now()){this.remaining=Math.round((ts.endTime-Date.now())/1000);this.start(this.habitId,true)}this.onTick(this.remaining,this.phase)}
+_cfg(){const s=storage.get().settings;return{focus:s.pomodoroMin*60,shortBreak:s.shortBreakMin*60,longBreak:s.longBreakMin*60}}
+_saveState(){const s=storage.get();s.timerState={running:this.running,phase:this.phase,endTime:this.endTime,habitId:this.habitId,remaining:this.remaining,focusCount:this.focusCount};storage.save()}
+_setPhase(phase){this.phase=phase;this.remaining=this._cfg()[phase];this.endTime=0;this._saveState();this.onTick(this.remaining,this.phase)}
+start(habitId,isRestore=false){if(this.running)return;if(habitId)this.habitId=habitId;if(this.remaining<=0)this._setPhase(this.phase);if(!isRestore){this.endTime=Date.now()+this.remaining*1000;this.startDuration=storage.get().settings.pomodoroMin;}this.running=true;this._saveState();this.interval=setInterval(()=>this._tick(),250);this._tick()}
+pause(){if(!this.running)return;this.remaining=Math.max(0,Math.round((this.endTime-Date.now())/1000));this.running=false;clearInterval(this.interval);this._saveState();this.onTick(this.remaining,this.phase)}
+skip(){this.pause();this._setPhase(this.phase==='focus'?'shortBreak':'focus')}
+_tick(){
+  const left=Math.max(0,Math.round((this.endTime-Date.now())/1000));
+  this.remaining=left;
+  this.onTick(left,this.phase);
+  if(left<=0){
+    clearInterval(this.interval);
+    this.running=false;
+    if(this.phase==='focus'&&this.habitId){
+      habits.addSession(this.habitId,this.startDuration||storage.get().settings.pomodoroMin);
+      wallet.earn(10);
+      this.focusCount++;
+    }
+    const nextPhase=this.phase==='focus'?(this.focusCount>0&&this.focusCount%4===0?'longBreak':'shortBreak'):'focus';
+    this._setPhase(nextPhase);
+    document.getElementById('startBtn').hidden=false;
+    document.getElementById('pauseBtn').hidden=true;
+    playSound(storage.get().settings.activeSound || 'classic');
+  }
+}
+onTick(remaining,phase){const el=document.getElementById('timerTime');if(!el)return;el.textContent=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;document.getElementById('timerPhase').textContent=phase;const ring=document.getElementById('ringFg');if(ring){const cfg=this._cfg()[phase];ring.style.strokeDashoffset=339.292*(1-(remaining/cfg))}document.title=remaining>0?`⏱ ${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')} · FocusFlow`:'FocusFlow'}
+}
+const timer=new PomodoroTimer();
+
+// ПОДПИСКА
+storage.subscribe(()=>{
+  ui.renderHabits();ui.renderWallet();renderPet();checkQuests();
+  const qm=document.getElementById('questsModal');if(qm&&qm.classList.contains('open'))renderQuests();
+  const sm=document.getElementById('shopModal');if(sm&&sm.classList.contains('open'))updateShop();
+  updateChestUI();
+});
+ui.renderHabits();ui.renderWallet();renderPet();
+
+// ОБРАБОТЧИКИ
+document.getElementById('startBtn').addEventListener('click',()=>{const hId=document.getElementById('habitSelect').value;if(!hId&&timer.phase==='focus')return;haptic('impact');document.getElementById('startBtn').hidden=true;document.getElementById('pauseBtn').hidden=false;timer.start(hId||timer.habitId)});
+document.getElementById('pauseBtn').addEventListener('click',()=>{haptic('impact');timer.pause();document.getElementById('startBtn').hidden=false;document.getElementById('pauseBtn').hidden=true});
+document.getElementById('skipBtn').addEventListener('click',()=>{haptic('impact');timer.skip();document.getElementById('startBtn').hidden=false;document.getElementById('pauseBtn').hidden=true});
+document.getElementById('settingsBtn').addEventListener('click',()=>{const s=storage.get().settings;document.getElementById('sPomo').value=s.pomodoroMin;document.getElementById('sShort').value=s.shortBreakMin;document.getElementById('sLong').value=s.longBreakMin;let txt="Введите промокод.",col="var(--text-muted)";if(s.isDev){txt="🛠 Разработчик!";col="#34d399"}else if(s.isVip){txt="⭐ VIP статус!";col="#fbbf24"}const v=document.getElementById('vipStatus');v.innerHTML=txt+"<br><br><span style='color:var(--text);'>По вопросам рекламы: <a href='https://t.me/Cristmas_tree' target='_blank' style='color:var(--accent-2);'>@Cristmas_tree</a></span>";v.style.color=col;document.getElementById('settingsModal').classList.add('open')});
+document.getElementById('applyPromoBtn').addEventListener('click',()=>{const code=document.getElementById('promoInput').value.trim().toLowerCase();const s=storage.get();const v=document.getElementById('vipStatus');if(code==='korozkan'){if(s.settings.isVip){v.innerHTML="❌ VIP уже активирован!";v.style.color="var(--danger)"}else{s.settings.isVip=true;wallet.earn(500);v.innerHTML="🎉 VIP! +500 🪙";v.style.color="#fbbf24"}}else if(code==='degystaciavsellennou'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит активирован!";v.style.color="#34d399"}else if(code==='dev'||code==='admin'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит!";v.style.color="#34d399"}else if(code==='coin'){wallet.earn(1000);v.innerHTML="🎉 +1000 монет!";v.style.color="#fbbf24"}else if(code==='nadep'){wallet.earn(2500);v.innerHTML="🎉 +2500 монет!";v.style.color="#fbbf24"}else if(code==='exkort'){wallet.earn(5000);v.innerHTML="🎉 +5000 монет!";v.style.color="#fbbf24"}else{v.innerHTML="❌ Неверный код.";v.style.color="var(--danger)"}storage.save()});
+document.getElementById('saveSettingsBtn').addEventListener('click',()=>{const s=storage.get();s.settings.pomodoroMin=Math.max(1,+document.getElementById('sPomo').value);s.settings.shortBreakMin=Math.max(0.1,+document.getElementById('sShort').value);s.settings.longBreakMin=Math.max(1,+document.getElementById('sLong').value);storage.save();if(!timer.running){timer._setPhase(timer.phase);document.getElementById('startBtn').hidden=false;document.getElementById('pauseBtn').hidden=true;}document.getElementById('settingsModal').classList.remove('open')});
+document.getElementById('closeSettingsBtn').addEventListener('click',()=>document.getElementById('settingsModal').classList.remove('open'));
+document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(storage.get(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`focusflow-${todayStr()}.json`;a.click()});
+document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',(e)=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(event)=>{try{const parsed=JSON.parse(event.target.result);if(parsed.habits){storage.get().habits=parsed.habits;storage.get().settings=parsed.settings||storage.get().settings;storage.get().wallet=parsed.wallet||storage.get().wallet;storage.get().sessions=parsed.sessions||[];storage.save();ui.showToast('Импорт успешен!')}else{ui.showToast('Неверный файл')}}catch(err){ui.showToast('Ошибка чтения')}};reader.readAsText(file)});
 
 // СТАТИСТИКА
 document.getElementById('statsBtn').addEventListener('click',()=>{const s=analytics.getStats();const maxCount=Math.max(...Object.values(s.week),1);let chartHTML='<div style="display:flex;align-items:flex-end;justify-content:space-between;height:120px;margin-top:20px;padding-bottom:10px;border-bottom:1px solid var(--border);">';Object.entries(s.week).forEach(([date,count])=>{const dayName=date.slice(8);const height=(count/maxCount)*100;const color=count>0?'var(--accent)':'var(--surface)';chartHTML+=`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="font-size:0.7rem;color:var(--text-muted);font-weight:600;">${count>0?count:''}</div><div style="width:100%;max-width:24px;height:${Math.max(height,5)}%;background:${color};border-radius:6px 6px 0 0;transition:height 0.3s;"></div><div style="font-size:0.7rem;color:var(--text-muted);">${dayName}</div></div>`});chartHTML+='</div>';document.getElementById('statsContent').innerHTML=`<div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px;"><div style="background:var(--surface);padding:12px;border-radius:12px;flex:1;text-align:center;border:1px solid var(--border);"><div style="font-size:1.5rem;font-weight:800;color:var(--accent);">${s.total}</div><div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Всего</div></div><div style="background:var(--surface);padding:12px;border-radius:12px;flex:1;text-align:center;border:1px solid var(--border);"><div style="font-size:1.5rem;font-weight:800;color:var(--accent-2);">${(s.min/60).toFixed(1)}</div><div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Часов</div></div></div><h4 style="font-size:0.9rem;margin-bottom:4px;text-align:center;color:var(--text-muted);">Активность за 7 дней</h4>${chartHTML}<p style="font-size:0.75rem;color:var(--text-muted);margin-top:15px;text-align:center;">Каждый столбик — количество помидоров в день</p>`;document.getElementById('statsModal').classList.add('open')});
 document.getElementById('closeStatsBtn').addEventListener('click',()=>document.getElementById('statsModal').classList.remove('open'));
 
 // КОЛЕСО
-document.getElementById('wheelBtn').addEventListener('click',()=>{const s=storage.get();const btn=document.getElementById('spinBtn');if(s.wallet.spinUsed&&!s.settings.isDev){btn.textContent='Завтра!'}else{btn.textContent='Крутить'}document.getElementById('wheelModal').classList.add('open')});
-document.getElementById('spinBtn').addEventListener('click',()=>{const s=storage.get();if(s.wallet.spinUsed&&!s.settings.isDev)return;const wheel=document.getElementById('wheel');const btn=document.getElementById('spinBtn');btn.style.pointerEvents='none';btn.textContent='...';s.wallet.spinUsed=true;storage.save();haptic('impact');const winIndex=Math.floor(Math.random()*8);const targetAngle=1800+(winIndex*45)+22.5;wheel.style.transform=`rotate(${targetAngle}deg)`;setTimeout(()=>{const win=winIndex===0?50:winIndex===1?0:winIndex===2?1:winIndex===3?10:winIndex===4?100:winIndex===5?0:winIndex===6?20:2;if(win===1){ui.showToast('🎉 Заморозка!')}else if(win===2){ui.showToast('🎉 x2 монеты!')}else if(win===0){ui.showToast('😢 Пусто')}else{wallet.earn(win);ui.showToast(`🎉 +${win} 🪙`)}haptic('success');wheel.style.transition='none';wheel.style.transform='rotate(0deg)';setTimeout(()=>{wheel.style.transition='transform 4s cubic-bezier(0.15, 0.85, 0.25, 1)'},50);btn.style.pointerEvents='auto';btn.textContent=s.settings.isDev?'Крутить':'Завтра!';document.getElementById('shopBtn').click()},4000)});
+document.getElementById('wheelBtn').addEventListener('click',()=>{const s=storage.get();const btn=document.getElementById('spinBtn');if(s.wallet.spinDate === todayStr() && !s.settings.isDev){btn.textContent='Завтра!'}else{btn.textContent='Крутить'}document.getElementById('wheelModal').classList.add('open')});
+document.getElementById('spinBtn').addEventListener('click',()=>{const s=storage.get();if(s.wallet.spinDate === todayStr() && !s.settings.isDev)return ui.showToast('Уже крутил сегодня! Приходи завтра 🎡');const wheel=document.getElementById('wheel');const btn=document.getElementById('spinBtn');btn.style.pointerEvents='none';btn.textContent='...';s.wallet.spinDate=todayStr();storage.save();haptic('impact');const winIndex=Math.floor(Math.random()*8);const targetAngle=1800+(winIndex*45)+22.5;wheel.style.transform=`rotate(${targetAngle}deg)`;setTimeout(()=>{const win=winIndex===0?50:winIndex===1?0:winIndex===2?1:winIndex===3?10:winIndex===4?100:winIndex===5?0:winIndex===6?20:2;if(win===1){s.wallet.inventory.freeze=(s.wallet.inventory.freeze||0)+1;storage.save();ui.showToast('🎉 Заморозка!')}else if(win===2){s.wallet.doubleUntil=Date.now()+3600000;storage.save();ui.showToast('🎉 x2 монеты на час!')}else if(win===0){ui.showToast('😢 Пусто')}else{wallet.earn(win);ui.showToast(`🎉 +${win} 🪙`)}haptic('success');wheel.style.transition='none';wheel.style.transform='rotate(0deg)';setTimeout(()=>{wheel.style.transition='transform 4s cubic-bezier(0.15, 0.85, 0.25, 1)'},50);btn.style.pointerEvents='auto';btn.textContent='Завтра!';updateShop();},4000)});
 document.getElementById('closeWheelBtn').addEventListener('click',()=>document.getElementById('wheelModal').classList.remove('open'));
 
-// КВЕСТЫ
-const QUEST_POOL = [
-  {id:'f1',text:'Заверши 1 помидор',target:1,type:'pomo',reward:10,tier:1},
-  {id:'f3',text:'Заверши 3 помидора',target:3,type:'pomo',reward:30,tier:1},
-  {id:'h1',text:'Заверши 1 привычку',target:1,type:'habit',reward:40,tier:1},
-  {id:'e50',text:'Заработай 50 монет',target:50,type:'earn',reward:20,tier:1},
-  {id:'w1',text:'Прокрути колесо',target:1,type:'wheel',reward:15,tier:1},
-  {id:'s2',text:'Достигни стрика 2',target:2,type:'streak',reward:50,tier:1},
-  {id:'f5',text:'Заверши 5 помидоров',target:5,type:'pomo',reward:60,tier:2},
-  {id:'h2',text:'Заверши 2 привычки',target:2,type:'habit',reward:80,tier:2},
-  {id:'e100',text:'Заработай 100 монет',target:100,type:'earn',reward:50,tier:2},
-  {id:'s3',text:'Достигни стрика 3',target:3,type:'streak',reward:100,tier:2},
-  {id:'early',text:'Ранняя пташка (до 8:00)',target:1,type:'time',reward:40,tier:2},
-  {id:'night',text:'Сова (после 23:00)',target:1,type:'time',reward:40,tier:2},
-  {id:'f10',text:'Заверши 10 помидоров',target:10,type:'pomo',reward:150,tier:3},
-  {id:'s7',text:'Достигни стрика 7',target:7,type:'streak',reward:250,tier:3},
-  {id:'perfect',text:'Идеальный день (все привычки)',target:1,type:'perfect',reward:200,tier:3}
-];
-
-function generateDailyQuests() {
+// АВТОСМЕНА ДНЯ
+setInterval(() => {
   const s = storage.get();
-  const t1 = QUEST_POOL.filter(q => q.tier === 1);
-  const t2 = QUEST_POOL.filter(q => q.tier === 2);
-  const t3 = QUEST_POOL.filter(q => q.tier === 3);
-  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-  s.daily.quests = [
-    { ...pick(t1), progress: 0, claimed: false },
-    { ...pick(t2), progress: 0, claimed: false },
-    { ...pick(t3), progress: 0, claimed: false }
-  ];
-  s.daily.date = todayStr();
-  storage.save();
-}
-if (!storage.get().daily.date || storage.get().daily.date !== todayStr()) { generateDailyQuests(); }
-
-function checkQuests() {
-  const s = storage.get();
-  const todaySessions = s.sessions.filter(x => x.date === todayStr());
-  const todayHabits = new Set(todaySessions.map(x => x.habitId)).size;
-  const maxStreak = Math.max(...habits.list().map(h => analytics.getStreak(h.id)), 0);
-  s.daily.quests.forEach(q => {
-    if (q.claimed) return;
-    if (q.type === 'pomo') q.progress = todaySessions.length;
-    else if (q.type === 'habit') q.progress = todayHabits;
-    else if (q.type === 'earn') q.progress = s.wallet.coins;
-    else if (q.type === 'streak') q.progress = maxStreak;
-    else if (q.type === 'wheel') q.progress = s.wallet.spinUsed ? 1 : 0;
-    else if (q.type === 'time') {
-      const h = new Date().getHours();
-      if ((q.id === 'early' && h < 8) || (q.id === 'night' && h >= 23)) q.progress = 1;
-    }
-  });
-  storage.save();
-}
-
-window.skipQuest = function(id) {
-  const s = storage.get();
-  if (s.wallet.coins < 20) return ui.showToast('Недостаточно монет!');
-  wallet.spend(20);
-  const idx = s.daily.quests.findIndex(q => q.id === id);
-  if (idx !== -1) {
-    const q = s.daily.quests[idx];
-    const pool = QUEST_POOL.filter(x => x.tier === q.tier && !s.daily.quests.some(y => y.id === x.id));
-    const newQuest = pool[Math.floor(Math.random() * pool.length)] || QUEST_POOL[0];
-    s.daily.quests[idx] = { ...newQuest, progress: 0, claimed: false };
+  if (s.daily.date !== todayStr()) {
+    generateDailyQuests();
+    s.wallet.freeClaimedDate = '';
+    s.wallet.spinDate = '';
     storage.save();
-    renderQuests();
-    ui.showToast('Квест заменен!');
+    initShop();
+    const qm = document.getElementById('questsModal');
+    if (qm && qm.classList.contains('open')) renderQuests();
   }
-};
+}, 60000);
 
-window.claimQuest = function(id) {
-  const s = storage.get();
-  const q = s.daily.quests.find(x => x.id === id);
-  if (q && q.progress >= q.target && !q.claimed) {
-    q.claimed = true;
-    wallet.earn(q.reward);
-    ui.showToast('Награда получена!');
-    haptic('success');
-    storage.save();
-    renderQuests();
-  }
-};
-
-function renderQuests() {
-  const s = storage.get();
-  let html = '';
-  s.daily.quests.forEach(q => {
-    const pct = Math.min(100, ((q.progress || 0) / q.target) * 100);
-    html += `
-      <div class="quest-item">
-        <div class="quest-info">
-          <div class="quest-title">${q.text}</div>
-          <div class="quest-progress-text">${q.progress || 0} / ${q.target} · 🪙 ${q.reward}</div>
-          <div style="background:var(--bg);height:6px;border-radius:3px;margin-top:6px;overflow:hidden;">
-            <div style="width:${pct}%;height:100%;background:var(--accent);"></div>
-          </div>
-        </div>
-        <div class="quest-actions">
-          ${q.claimed 
-            ? `<button class="btn" disabled style="color:var(--success)">✓ Готово</button>`
-            : (q.progress || 0) >= q.target
-              ? `<button class="btn btn-primary" onclick="claimQuest('${q.id}')">Забрать</button>`
-              : `<button class="btn btn-skip" ${s.wallet.coins >= 20 ? '' : 'disabled'} onclick="skipQuest('${q.id}')">🔄 -20🪙</button>`
-          }
-        </div>
-      </div>
-    `;
-  });
-  document.getElementById('questsContent').innerHTML = html;
-}
-
-// ДОСТИЖЕНИЯ
-const ACHIEVEMENTS = [
-  { id: 'ach_first', name: 'Первый шаг', icon: '🌱', desc: 'Заверши 1 помидор', check: s => s.sessions.length >= 1 },
-  { id: 'ach_10', name: 'В деле', icon: '🎯', desc: 'Заверши 10 помидоров', check: s => s.sessions.length >= 10 },
-  { id: 'ach_100', name: 'Сотня!', icon: '💯', desc: 'Заверши 100 помидоров', check: s => s.sessions.length >= 100 },
-  { id: 'ach_rich', name: 'Богач', icon: '💰', desc: 'Накопи 1000 монет', check: s => s.wallet.coins >= 1000 },
-  { id: 'ach_wheel', name: 'Фортуна', icon: '🎡', desc: 'Прокрути колесо', check: s => s.wallet.spinUsed },
-  { id: 'ach_streak7', name: 'Неделя силы', icon: '🔥', desc: 'Стрик 7 дней', check: s => habits.list().some(h => analytics.getStreak(h.id) >= 7) },
-  { id: 'ach_early', name: 'Ранняя пташка', icon: '🌅', desc: 'Помидор до 8:00', check: s => s.sessions.some(x => new Date(x.completedAt).getHours() < 8) },
-  { id: 'ach_night', name: 'Сова', icon: '🦉', desc: 'Помидор после 23:00', check: s => s.sessions.some(x => new Date(x.completedAt).getHours() >= 23) },
-  { id: 'ach_speed', name: 'Спидран', icon: '💨', desc: '10 помидоров за день', check: s => s.sessions.filter(x => x.date === todayStr()).length >= 10 },
-  { id: 'ach_habit3', name: 'Коллекционер', icon: '📚', desc: 'Создай 3 привычки', check: s => habits.list().length >= 3 }
-];
-
-function checkAchievements() {
-  const s = storage.get();
-  let newUnlocked = false;
-  ACHIEVEMENTS.forEach(a => {
-    if (!s.achievements.unlocked.includes(a.id) && a.check(s)) {
-      s.achievements.unlocked.push(a.id);
-      wallet.earn(50);
-      ui.showToast(`🏅 Достижение: ${a.name}!`);
-      haptic('success');
-      newUnlocked = true;
-    }
-  });
-  if (newUnlocked) storage.save();
-}
-
-function renderAchievements() {
-  const s = storage.get();
-  let html = '<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">';
-  ACHIEVEMENTS.forEach(a => {
-    const isUnlocked = s.achievements.unlocked.includes(a.id);
-    html += `
-      <div style="background:${isUnlocked ? 'var(--surface)' : 'rgba(255,255,255,.02)'}; border:1px solid ${isUnlocked ? 'var(--border)' : 'transparent'}; border-radius:12px; padding:12px; text-align:center; ${isUnlocked ? '' : 'opacity:0.5;'}">
-        <div style="font-size:2rem; margin-bottom:6px;">${isUnlocked ? a.icon : '🔒'}</div>
-        <div style="font-weight:700; font-size:0.8rem; margin-bottom:4px;">${a.name}</div>
-        <div style="font-size:0.65rem; color:var(--text-muted);">${a.desc}</div>
-      </div>
-    `;
-  });
-  html += '</div>';
-  document.getElementById('achieveContent').innerHTML = html;
-}
-
-document.getElementById('questsBtn').addEventListener('click', () => { checkQuests(); renderQuests(); document.getElementById('questsModal').classList.add('open'); });
-document.getElementById('achieveBtn').addEventListener('click', () => { renderAchievements(); document.getElementById('achieveModal').classList.add('open'); });
-
-// НАСТРОЙКИ / ПРОМОКОДЫ
-document.getElementById('settingsBtn').addEventListener('click',()=>{const s=storage.get().settings;document.getElementById('sPomo').value=s.pomodoroMin;document.getElementById('sShort').value=s.shortBreakMin;document.getElementById('sLong').value=s.longBreakMin;let txt="Введите промокод.",col="var(--text-muted)";if(s.isDev){txt="🛠 Разработчик!";col="#34d399"}else if(s.isVip){txt="⭐ VIP статус!";col="#fbbf24"}const v=document.getElementById('vipStatus');v.innerHTML=txt;v.style.color=col;document.getElementById('settingsModal').classList.add('open')});
-document.getElementById('applyPromoBtn').addEventListener('click',()=>{const code=document.getElementById('promoInput').value.trim().toLowerCase();const s=storage.get();const v=document.getElementById('vipStatus');if(code==='korozkan'){if(s.settings.isVip){v.innerHTML="❌ VIP уже активирован!";v.style.color="var(--danger)"}else{s.settings.isVip=true;wallet.earn(500);v.innerHTML="🎉 VIP! +500 🪙";v.style.color="#fbbf24"}}else if(code==='degystaciavsellennou'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит активирован!";v.style.color="#34d399"}else if(code==='dev'||code==='admin'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит!";v.style.color="#34d399"}else{v.innerHTML="❌ Неверный код.";v.style.color="var(--danger)"}storage.save()});
-document.getElementById('saveSettingsBtn').addEventListener('click',()=>{const s=storage.get();s.settings.pomodoroMin=Math.max(1,+document.getElementById('sPomo').value);s.settings.shortBreakMin=Math.max(0.1,+document.getElementById('sShort').value);s.settings.longBreakMin=Math.max(1,+document.getElementById('sLong').value);storage.save();timer._setPhase(timer.phase,true);ui.renderTimer(timer.remaining,timer.phase);document.getElementById('settingsModal').classList.remove('open')});
-document.getElementById('closeSettingsBtn').addEventListener('click',()=>document.getElementById('settingsModal').classList.remove('open'));
-
-if (!tg) {
-  document.documentElement.dataset.theme=storage.get().settings.activeTheme||'dark';
-}
-document.addEventListener('click',e=>{if(e.target.classList.contains('color-dot')){document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active'));e.target.classList.add('active');document.getElementById('hColor').value=e.target.dataset.color}});
-document.getElementById('addHabitBtn').addEventListener('click',()=>{document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active'));const first=document.querySelector('.color-dot');if(first){first.classList.add('active');document.getElementById('hColor').value=first.dataset.color}});
+// ТЕМА
+document.documentElement.dataset.theme=storage.get().settings.activeTheme||'dark';
+if (storage.get().settings.activeSkin) applySkin(storage.get().settings.activeSkin);
+if (storage.get().settings.activeFrame) applyFrame(storage.get().settings.activeFrame);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+});
+document.getElementById('hName').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('saveHabitBtn').click(); });
+document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('applyPromoBtn').click(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && timer.running) timer._tick(); });
 </script>
 </body>
   </html>
