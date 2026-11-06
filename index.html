@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FocusFlow</title>
+<!-- Официальный скрипт Telegram для Mini Apps -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d12;--bg-elev:#12151d;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--text:#e7e9ee;--text-muted:#8b90a0;--accent:#6366f1;--accent-2:#22d3ee;--success:#34d399;--danger:#f87171;--radius:16px}
+[data-theme="light"]{--bg:#f4f5f9;--bg-elev:#fff;--surface:rgba(0,0,0,.03);--border:rgba(0,0,0,.08);--text:#12151d;--text-muted:#5b6070}
+[data-theme="emerald"]{--bg:#061410;--bg-elev:#0a1f18;--surface:rgba(16,185,129,.05);--border:rgba(16,185,129,.15);--accent:#10b981;--accent-2:#34d399}
+[data-theme="rose"]{--bg:#140810;--bg-elev:#1f0a18;--surface:rgba(244,63,94,.05);--border:rgba(244,63,94,.15);--accent:#f43f5e;--accent-2:#fb7185}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:radial-gradient(circle at 50% -20%,rgba(99,102,241,.15),transparent 60%),var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden; padding-bottom: env(safe-area-inset-bottom);}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+header{display:flex;align-items:center;gap:8px;padding:12px 16px;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);background:rgba(11,13,18,.8);border-bottom:1px solid var(--border);flex-wrap:wrap}
+[data-theme="light"] header{background:rgba(244,245,249,.8)}
+[data-theme="emerald"] header{background:rgba(6,20,16,.8)}
+[data-theme="rose"] header{background:rgba(20,8,16,.8)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;margin-right:auto}
+.logo-mark{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.icon-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;width:34px;height:34px;display:grid;place-items:center;font-size:1rem}
+.wallet-badge{display:flex;align-items:center;gap:4px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);padding:4px 8px;border-radius:16px;font-weight:700;font-size:.9rem;color:#fbbf24}
+.app{display:flex;flex-direction:column;gap:16px;padding:16px;max-width:600px;margin:0 auto}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.timer-card{display:flex;flex-direction:column;align-items:center;gap:16px}
+.ring-wrap{position:relative;width:100%;max-width:280px;aspect-ratio:1}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:8}
+.ring-fg{fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .3s ease}
+.timer-time{position:absolute;inset:0;display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(3rem,15vw,4.5rem);letter-spacing:-.03em}
+.timer-phase{position:absolute;bottom:20%;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.timer-actions{display:flex;gap:10px;width:100%;justify-content:center}
+.btn{border:none;border-radius:12px;padding:12px 20px;font-weight:600;background:var(--surface);color:var(--text);border:1px solid var(--border);flex:1;text-align:center}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none}
+.habit-select{background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font:inherit;width:100%;text-align:center}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
+.section-title h2{font-size:1rem;margin:0}
+.habit-grid{display:flex;flex-direction:column;gap:10px}
+.habit{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
+.habit-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:1.2rem;flex:none}
+.habit-info{flex:1;min-width:0}
+.habit-name{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.habit-meta{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+.color-picker-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;margin-bottom:8px}
+.color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.2s}
+.color-dot.active{border-color:#fff;transform:scale(1.1)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;z-index:100;padding:16px;opacity:0;pointer-events:none;transition:.2s}
+.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:20px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:.2s;margin:0 auto}
+.modal-backdrop.open .modal{transform:translateY(0)}
+.modal h3{margin:0 0 14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:.85rem;color:var(--text-muted)}
+.field input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px;font:inherit;width:100%}
+.row{display:flex;gap:10px;width:100%}
+.row input{flex:1;min-width:0}
+.row button{flex:0 0 auto;padding-left:15px;padding-right:15px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;width:100%}
+.modal-actions .btn{flex:1}
+.shop-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.shop-tab{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:20px;font-size:.8rem;cursor:pointer}
+.shop-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.shop-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:6px;position:relative;justify-content:space-between}
+.shop-item-icon{font-size:1.8rem}
+.shop-item-name{font-weight:600;font-size:.85rem}
+.shop-item-desc{font-size:.7rem;color:var(--text-muted);line-height:1.1}
+.shop-item-price{display:inline-block;background:rgba(251,191,36,.15);color:#fbbf24;padding:4px 8px;border-radius:10px;font-weight:700;font-size:.8rem;margin:0 auto}
+.shop-item button{padding:8px;font-size:.85rem;width:100%}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;z-index:200;transition:transform .3s ease;font-size:.9rem;color:var(--text)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.empty{color:var(--text-muted);font-size:.9rem;text-align:center;padding:20px}
+@keyframes coinUp{to{transform:translateY(-60px);opacity:0}}
+.wheel-container{position:relative;width:260px;height:260px;margin:20px auto;display:flex;justify-content:center;align-items:center}
+.wheel-pointer{position:absolute;top:-20px;font-size:2.5rem;color:var(--danger);z-index:10;text-shadow:0 2px 5px rgba(0,0,0,.5)}
+.wheel{width:100%;height:100%;border-radius:50%;border:6px solid var(--bg-elev);box-shadow:0 0 20px rgba(0,0,0,.6);position:relative;transition:transform 4s cubic-bezier(0.15, 0.85, 0.25, 1);background:conic-gradient(#6366f1 0 45deg, #22d3ee 45deg 90deg, #34d399 90deg 135deg, #f59e0b 135deg 180deg, #f43f5e 180deg 225deg, #a855f7 225deg 270deg, #14b8a6 270deg 315deg, #eab308 315deg 360deg);}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;border-radius:50%;background:var(--bg-elev);border:4px solid var(--border);display:grid;place-items:center;font-weight:800;font-size:0.85rem;cursor:pointer;z-index:5;color:var(--accent);box-shadow:0 0 15px rgba(0,0,0,.8);transition:.2s;text-align:center;line-height:1.1}
+.wheel-center:active{transform:translate(-50%,-50%) scale(0.95)}
+.quest-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.quest-info{flex:1}
+.quest-title{font-weight:600;font-size:0.9rem;margin-bottom:4px}
+.quest-progress-text{font-size:0.75rem;color:var(--text-muted)}
+.quest-actions{display:flex;flex-direction:column;gap:4px}
+.quest-actions button{padding:6px 10px;font-size:0.75rem;border-radius:8px;flex:none;width:auto}
+.btn-skip{background:var(--surface);border:1px solid var(--border);color:var(--text-muted)}
+.btn-skip:hover{color:var(--danger);border-color:var(--danger)}
+.btn-skip:disabled{opacity:0.5;cursor:not-allowed}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><div class="logo-mark"></div>FocusFlow</div>
+<div class="wallet-badge"><span>🪙</span><span id="coinCount">0</span><span id="devBadge" hidden>♾️</span></div>
+<button class="icon-btn" id="questsBtn" title="Квесты">🎯</button>
+<button class="icon-btn" id="achieveBtn" title="Достижения">🏆</button>
+<button class="icon-btn" id="wheelBtn">🎡</button>
+<button class="icon-btn" id="statsBtn">📊</button>
+<button class="icon-btn" id="shopBtn">🛒</button>
+<button class="icon-btn" id="settingsBtn">⚙️</button>
+</header>
+<div class="app">
+<section class="card timer-card">
+<div class="ring-wrap">
+<svg viewBox="0 0 120 120">
+<defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--accent-2)"/></linearGradient></defs>
+<circle class="ring-bg" cx="60" cy="60" r="54"/><circle class="ring-fg" id="ringFg" cx="60" cy="60" r="54" stroke-dasharray="339.292" stroke-dashoffset="0"/>
+</svg>
+<div class="timer-time" id="timerTime">25:00</div><div class="timer-phase" id="timerPhase">focus</div>
+</div>
+<select class="habit-select" id="habitSelect"><option value="">— выбери привычку —</option></select>
+<div class="timer-actions"><button class="btn btn-primary" id="startBtn">Старт</button><button class="btn" id="pauseBtn" hidden>Пауза</button><button class="btn" id="skipBtn">Пропуск</button></div>
+</section>
+<section class="card">
+<div class="section-title"><h2>Привычки</h2><button class="btn" id="addHabitBtn" style="flex:none;padding:8px 12px;font-size:.85rem">+ Добавить</button></div>
+<div class="habit-grid" id="habitList"></div>
+</section>
+</div>
+
+<!-- Модалки -->
+<div class="modal-backdrop" id="modal">
+<div class="modal">
+<h3>Новая привычка</h3>
+<div class="field"><label>Название</label><input id="hName" placeholder="Читать 30 минут" maxlength="40"></div>
+<div class="row">
+<div class="field"><label>Иконка</label><input id="hIcon" value="📚" maxlength="4"></div>
+<div class="field"><label>Цвет</label>
+<div class="color-picker-row">
+<div class="color-dot active" style="background:#6366f1" data-color="#6366f1"></div>
+<div class="color-dot" style="background:#22d3ee" data-color="#22d3ee"></div>
+<div class="color-dot" style="background:#34d399" data-color="#34d399"></div>
+<div class="color-dot" style="background:#f59e0b" data-color="#f59e0b"></div>
+<div class="color-dot" style="background:#f43f5e" data-color="#f43f5e"></div>
+<div class="color-dot" style="background:#a855f7" data-color="#a855f7"></div>
+</div>
+<input type="hidden" id="hColor" value="#6366f1">
+</div>
+</div>
+<div class="field"><label>Цель (помидоров в день)</label><input id="hTarget" type="number" min="1" max="20" value="1"></div>
+<div class="modal-actions"><button class="btn" id="cancelBtn">Отмена</button><button class="btn btn-primary" id="saveHabitBtn">Сохранить</button></div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="settingsModal">
+<div class="modal">
+<h3>Настройки ⚙️</h3>
+<div class="field"><label>Pomodoro (мин)</label><input id="sPomo" type="number" min="1" value="25"></div>
+<div class="field"><label>Короткий перерыв (мин)</label><input id="sShort" type="number" step="0.1" min="0.1" value="5"></div>
+<div class="field"><label>Длинный перерыв (мин)</label><input id="sLong" type="number" min="1" value="15"></div>
+<hr style="border-color:var(--border);margin:12px 0">
+<div class="field"><label>Промокод</label><div class="row"><input id="promoInput" placeholder="Введи код..."><button class="btn" id="applyPromoBtn">OK</button></div></div>
+<div id="vipStatus" style="font-size:.85rem;color:var(--text-muted);margin-bottom:12px"></div>
+<div class="modal-actions"><button class="btn" id="closeSettingsBtn">Закрыть</button><button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button></div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="shopModal">
+<div class="modal">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">🛒 Магазин</h3><div class="shop-item-price">🪙 <span id="shopCoins">0</span></div></div>
+<div class="shop-tabs"><button class="shop-tab active" data-tab="all">Все</button><button class="shop-tab" data-tab="theme">Темы</button></div>
+<div class="shop-grid" id="shopGrid"></div>
+<div class="modal-actions" style="margin-top:16px"><button class="btn" id="closeShopBtn">Закрыть</button></div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="wheelModal">
+<div class="modal" style="text-align:center;">
+<h3>🎡 Колесо фортуны</h3>
+<div class="wheel-container"><div class="wheel-pointer">▼</div><div class="wheel" id="wheel"></div><div class="wheel-center" id="spinBtn">Крутить</div></div>
+<div class="modal-actions" style="margin-top:20px"><button class="btn" id="closeWheelBtn">Закрыть</button></div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="statsModal">
+<div class="modal"><h3>📊 Статистика</h3><div id="statsContent"></div><div class="modal-actions"><button class="btn" id="closeStatsBtn">Закрыть</button></div></div>
+</div>
+
+<div class="modal-backdrop" id="questsModal">
+<div class="modal"><h3>🎯 Квесты дня</h3><div id="questsContent"></div><div class="modal-actions"><button class="btn" onclick="document.getElementById('questsModal').classList.remove('open')">Закрыть</button></div></div>
+</div>
+
+<div class="modal-backdrop" id="achieveModal">
+<div class="modal"><h3>🏆 Достижения</h3><div id="achieveContent"></div><div class="modal-actions"><button class="btn" onclick="document.getElementById('achieveModal').classList.remove('open')">Закрыть</button></div></div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+// ==========================================
+// ИНТЕГРАЦИЯ С TELEGRAM
+// ==========================================
+const tg = window.Telegram?.WebApp;
+let tgHaptic = null;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+  tgHaptic = tg.HapticFeedback;
+  
+  // Настраиваем цвета под тему Telegram (чтобы выглядело нативно)
+  const p = tg.themeParams;
+  if (p.bg_color) document.documentElement.style.setProperty('--bg', p.bg_color);
+  if (p.text_color) document.documentElement.style.setProperty('--text', p.text_color);
+  if (p.secondary_bg_color) document.documentElement.style.setProperty('--bg-elev', p.secondary_bg_color);
+  if (p.hint_color) document.documentElement.style.setProperty('--text-muted', p.hint_color);
+  if (p.button_color) document.documentElement.style.setProperty('--accent', p.button_color);
+  
+  // Кнопка "Назад" на телефоне (закрывает модалки, а не приложение)
+  tg.BackButton.onClick(() => {
+    let closed = false;
+    document.querySelectorAll('.modal-backdrop.open').forEach(m => {
+      m.classList.remove('open');
+      closed = true;
+    });
+    if (!closed) tg.close();
+  });
+  
+  // Следим за открытием модалок, чтобы показывать кнопку "Назад"
+  const observer = new MutationObserver(() => {
+    const hasOpenModal = document.querySelector('.modal-backdrop.open');
+    if (hasOpenModal) tg.BackButton.show();
+    else tg.BackButton.hide();
+  });
+  observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+}
+
+// Обертка для вибрации (работает в ТГ, откатывается к браузеру вне ТГ)
+function haptic(type) {
+  if (tgHaptic) {
+    if (type === 'success') tgHaptic.notificationOccurred('success');
+    else if (type === 'error') tgHaptic.notificationOccurred('error');
+    else tgHaptic.impactOccurred('light');
+  } else if (navigator.vibrate) {
+    navigator.vibrate(type === 'success' ? [200, 100, 200] : 20);
+  }
+}
+
+// ==========================================
+// ЛОГИКА ПРИЛОЖЕНИЯ (не изменена)
+// ==========================================
+const todayStr=(d=new Date())=>{const z=n=>String(n).padStart(2,'0');return`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`};
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():'id-'+Math.random().toString(36).slice(2)+Date.now());
+const KEY='focusflow_v1';
+const defaultState=()=>({habits:[],sessions:[],settings:{pomodoroMin:25,shortBreakMin:5,longBreakMin:15,theme:'dark',isVip:false,isDev:false,activeTheme:'dark'},wallet:{coins:0,inventory:{freeze:0,skipBreak:0},unlocked:{themes:['dark','light'],frames:[]},doubleUntil:0,spinUsed:false},timerState:{running:false,phase:'focus',endTime:0,habitId:null,remaining:0,focusCount:0},daily:{date:'',quests:[]},achievements:{unlocked:[]}});
+const storage=(()=>{
+let state=load();const subs=new Set();
+function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return defaultState();const parsed=JSON.parse(raw);const safe={...defaultState(),...parsed,settings:{...defaultState().settings,...(parsed.settings||{})},wallet:{...defaultState().wallet,...(parsed.wallet||{})},timerState:{...defaultState().timerState,...(parsed.timerState||{})},daily:{...defaultState().daily,...(parsed.daily||{})},achievements:{...defaultState().achievements,...(parsed.achievements||{})}};safe.habits=Array.isArray(safe.habits)?safe.habits:[];safe.sessions=Array.isArray(safe.sessions)?safe.sessions:[];return safe}catch(e){return defaultState()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}subs.forEach(cb=>cb(state))}
+function get(){return state}
+function subscribe(cb){subs.add(cb);cb(state);return()=>subs.delete(cb)}
+return{get,save,subscribe}})();
+
+// МОНЕТЫ
+const wallet=(()=>{
+const state=()=>storage.get();
+function earn(amount){const w=state().wallet;if(state().settings.isDev)return;let final=amount;if(Date.now()<w.doubleUntil)final*=2;w.coins+=final;storage.save();ui.showCoinFloat(final);checkAchievements()}
+function spend(amount){const w=state().wallet;if(state().settings.isDev)return true;if(w.coins<amount)return false;w.coins-=amount;storage.save();return true}
+return{earn,spend}})();
+
+// ПРИВЫЧКИ
+const habits=(()=>{
+const state=()=>storage.get();
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function add({name,icon,color,targetPerDay=1}){const s=state();s.habits.push({id:uid(),name:escapeHtml(name.trim()),icon:escapeHtml((icon||'🎯').slice(0,4)),color,targetPerDay:Math.max(1,+targetPerDay||1),createdAt:todayStr(),archived:false,freezeUsed:[]});storage.save();checkAchievements()}
+function archive(id){const h=state().habits.find(h=>h.id===id);if(h){h.archived=true;storage.save()}}
+function list(){return state().habits.filter(h=>!h.archived)}
+function byId(id){return state().habits.find(h=>h.id===id)}
+function todayCount(id){const t=todayStr();return state().sessions.filter(s=>s.habitId===id&&s.date===t).length}
+function addSession(habitId,durationMin){if(!habitId||!habits.byId(habitId))return;const s=state();s.sessions.push({id:uid(),habitId,date:todayStr(),durationMin,completedAt:Date.now()});storage.save();checkQuests();checkAchievements()}
+return{add,archive,list,byId,todayCount,addSession,escapeHtml}})();
+
+// АНАЛИТИКА
+const analytics=(()=>{
+function getStreak(id){const habit=habits.byId(id);if(!habit)return 0;const counts={};storage.get().sessions.filter(s=>s.habitId===id).forEach(s=>counts[s.date]=(counts[s.date]||0)+1);let streak=0,cursor=new Date();if((counts[todayStr(cursor)]||0)<habit.targetPerDay){cursor.setDate(cursor.getDate()-1)}while(true){const key=todayStr(cursor);if((counts[key]||0)>=habit.targetPerDay||(habit.freezeUsed&&habit.freezeUsed.includes(key))){streak++;cursor.setDate(cursor.getDate()-1)}else break}return streak}
+function getStats(){const s=storage.get().sessions;const total=s.length;const min=s.reduce((a,b)=>a+b.durationMin,0);const week={};for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const k=todayStr(d);week[k]=s.filter(x=>x.date===k).length}return{total,min,week}}
+return{getStreak,getStats}})();
+
+// ЗВУК (Безопасный вызов)
+let audioCtx;
+function playSound() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.type = 'sine'; osc.frequency.value = 880;
+    const now = audioCtx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.5, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.start(now); osc.stop(now + 0.5);
+  } catch(e) {}
+}
+
+// ТАЙМЕР
+class PomodoroTimer{
+constructor({onTick,onPhase,onComplete}){this.onTick=onTick;this.onPhase=onPhase;this.onComplete=onComplete;const ts=storage.get().timerState;this.phase=ts.phase||'focus';this.running=false;this.remaining=ts.remaining||this._cfg()[this.phase];this.endTime=0;this.habitId=ts.habitId||null;this.focusCount=ts.focusCount||0;this.interval=null;if(ts.running&&ts.endTime>Date.now()){this.remaining=Math.round((ts.endTime-Date.now())/1000);this.start(this.habitId,true)}this.onTick(this.remaining,this.phase)}
+_cfg(){const s=storage.get().settings;return{focus:s.pomodoroMin*60,shortBreak:Math.round(s.shortBreakMin*60),longBreak:s.longBreakMin*60}}
+_saveState(){const s=storage.get();s.timerState={running:this.running,phase:this.phase,endTime:this.endTime,habitId:this.habitId,remaining:this.remaining,focusCount:this.focusCount};storage.save()}
+_setPhase(phase,silent=false){this.phase=phase;this.remaining=this._cfg()[phase];this.endTime=0;this._saveState();if(!silent)this.onPhase&&this.onPhase(this.phase);this.onTick&&this.onTick(this.remaining,this.phase)}
+start(habitId,isRestore=false){if(this.running)return;if(habitId)this.habitId=habitId;if(this.remaining<=0)this._setPhase(this.phase);if(!isRestore)this.endTime=Date.now()+this.remaining*1000;this.running=true;this._saveState();this.interval=setInterval(()=>this._tick(),250);this._tick()}
+pause(){if(!this.running)return;this.remaining=Math.max(0,Math.round((this.endTime-Date.now())/1000));this.running=false;clearInterval(this.interval);this.interval=null;this._saveState();this.onTick&&this.onTick(this.remaining,this.phase)}
+skip(){this.pause();if(this.phase==='focus')this._advance(true);else{this._setPhase('focus')}}
+_tick(){const left=Math.max(0,Math.round((this.endTime-Date.now())/1000));this.remaining=left;this.onTick&&this.onTick(left,this.phase);if(left<=0){clearInterval(this.interval);this.interval=null;this.running=false;this._advance(false)}}
+_advance(skipped){if(this.phase==='focus'){if(!skipped&&this.habitId){habits.addSession(this.habitId,storage.get().settings.pomodoroMin);this.focusCount++;wallet.earn(10)}this.onComplete&&this.onComplete('focus',skipped);const isLong=(this.focusCount%4===0)&&this.focusCount>0;this._setPhase(isLong?'longBreak':'shortBreak')}else{this.onComplete&&this.onComplete(this.phase,skipped);this._setPhase('focus')}}}
+
+// UI
+const ui=(()=>{
+const $=sel=>document.querySelector(sel);
+const els={timerTime:$('#timerTime'),timerPhase:$('#timerPhase'),ringFg:$('#ringFg'),habitSelect:$('#habitSelect'),habitList:$('#habitList'),coinCount:$('#coinCount'),devBadge:$('#devBadge')};
+const RING=2*Math.PI*54;
+function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+function renderTimer(remaining,phase){els.timerTime.textContent=fmt(remaining);els.timerPhase.textContent=phase==='focus'?'focus':phase==='shortBreak'?'short break':'long break';const cfg={focus:storage.get().settings.pomodoroMin*60,shortBreak:Math.round(storage.get().settings.shortBreakMin*60),longBreak:storage.get().settings.longBreakMin*60}[phase];els.ringFg.style.strokeDashoffset=RING*(1-(remaining/cfg));document.title=`⏱ ${fmt(remaining)} · FocusFlow`}
+function renderHabits(){const list=habits.list();if(!list.length){els.habitList.innerHTML=`<div class="empty">Добавь первую привычку 👆</div>`;renderSelect();return}els.habitList.innerHTML=list.map(h=>{const done=habits.todayCount(h.id),streak=analytics.getStreak(h.id);return`<div class="habit"><div class="habit-icon" style="background:${h.color}22;color:${h.color}">${h.icon}</div><div class="habit-info"><div class="habit-name">${h.name}</div><div class="habit-meta">${done}/${h.targetPerDay} · 🔥 ${streak}</div></div><button class="icon-btn" data-archive="${h.id}" style="width:28px;height:28px;font-size:.8rem">✕</button></div>`}).join('');renderSelect()}
+function renderSelect(){const current=els.habitSelect.value;els.habitSelect.innerHTML=`<option value="">— выбери привычку —</option>`+habits.list().map(h=>`<option value="${h.id}">${h.icon} ${h.name}</option>`).join('');if(habits.list().some(h=>h.id===current))els.habitSelect.value=current}
+function renderWallet(){const w=storage.get().wallet;els.coinCount.textContent=storage.get().settings.isDev?'∞':w.coins;els.devBadge.hidden=!storage.get().settings.isDev}
+function showCoinFloat(amount){const rect=els.coinCount.parentElement.getBoundingClientRect();const el=document.createElement('div');el.style.cssText=`position:fixed;font-weight:800;color:#fbbf24;pointer-events:none;z-index:999;left:${rect.left+rect.width/2}px;top:${rect.top+20}px;transform:translateX(-50%);animation:coinUp 1s ease-out forwards;`;el.textContent=`+${amount} 🪙`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
+function showToast(msg){const toast=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3000)}
+els.habitList.addEventListener('click',e=>{const btn=e.target.closest('[data-archive]');if(btn){habits.archive(btn.dataset.archive)}});
+document.getElementById('addHabitBtn').addEventListener('click',()=>document.getElementById('modal').classList.add('open'));
+document.getElementById('cancelBtn').addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
+document.getElementById('saveHabitBtn').addEventListener('click',()=>{const name=document.getElementById('hName').value.trim();if(!name)return;habits.add({name,icon:document.getElementById('hIcon').value,color:document.getElementById('hColor').value,targetPerDay:+document.getElementById('hTarget').value});document.getElementById('modal').classList.remove('open')});
+return{els,renderTimer,renderHabits,renderWallet,showCoinFloat,showToast}})();
+
+const timer=new PomodoroTimer({
+  onTick:(r,p)=>ui.renderTimer(r,p),
+  onPhase:p=>{ui.renderTimer(timer.remaining,p);ui.els.startBtn.hidden=timer.running;ui.els.pauseBtn.hidden=!timer.running},
+  onComplete:(phase, skipped)=>{
+    ui.els.startBtn.hidden=false;
+    ui.els.pauseBtn.hidden=true;
+    
+    if(!skipped){
+      playSound(); // Пытаемся включить звук
+      haptic('success'); // Вибрация через Telegram
+      ui.showToast(phase === 'focus' ? '🍅 Помидор готов! Пора отдохнуть.' : '☕ Перерыв окончен! Пора работать.');
+    }
+  }
+});
+
+storage.subscribe(()=>{ui.renderHabits();ui.renderWallet()});
+ui.renderHabits();ui.renderWallet();ui.renderTimer(timer.remaining,timer.phase);
+
+// Кнопки таймера (с вибрацией)
+document.getElementById('startBtn').addEventListener('click',()=>{
+  const hId=ui.els.habitSelect.value;
+  if(!hId && timer.phase==='focus') return;
+  haptic('impact'); // Вибрация
+  document.getElementById('startBtn').hidden=true;
+  document.getElementById('pauseBtn').hidden=false;
+  timer.start(hId || timer.habitId);
+});
+document.getElementById('pauseBtn').addEventListener('click',()=>{
+  haptic('impact');
+  timer.pause();
+  document.getElementById('startBtn').hidden=false;
+  document.getElementById('pauseBtn').hidden=true;
+});
+document.getElementById('skipBtn').addEventListener('click',()=>{
+  haptic('impact');
+  timer.skip();
+  document.getElementById('startBtn').hidden=false;
+  document.getElementById('pauseBtn').hidden=true;
+});
+
+// МАГАЗИН
+const SHOP_ITEMS=[{id:'theme_light',name:'Светлая',icon:'☀️',price:150,type:'theme',payload:'light',desc:'Дневной режим'},{id:'theme_emerald',name:'Изумрудная',icon:'🟢',price:200,type:'theme',payload:'emerald',desc:'Зелёный дизайн'},{id:'theme_rose',name:'Розовая',icon:'🌸',price:200,type:'theme',payload:'rose',desc:'Нежный дизайн'},{id:'freeze',name:'Заморозка',icon:'❄️',price:150,type:'consumable',payload:'freeze',desc:'Спасает стрик'},{id:'double',name:'x2 Монеты',icon:'⚡',price:250,type:'effect',payload:'double',desc:'Удвоение на 1 час'}];
+document.getElementById('shopBtn').addEventListener('click',()=>{document.getElementById('shopCoins').textContent=storage.get().settings.isDev?'∞':storage.get().wallet.coins;renderShop('all');document.getElementById('shopModal').classList.add('open')});
+function renderShop(tab){const w=storage.get().wallet;const grid=document.getElementById('shopGrid');const currentTheme=storage.get().settings.activeTheme||'dark';document.querySelectorAll('.shop-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));const filtered=SHOP_ITEMS.filter(i=>tab==='all'||i.type===tab);grid.innerHTML=filtered.map(item=>{const isTheme=item.type==='theme';const owned=(isTheme&&w.unlocked.themes.includes(item.payload));const qty=item.type==='consumable'?(w.inventory[item.payload]||0):0;let actionHTML='';if(owned){if(isTheme&&currentTheme===item.payload){actionHTML=`<button class="btn" disabled style="color:var(--success);border-color:var(--success)">✓ Активна</button>`}else if(isTheme){actionHTML=`<button class="btn btn-primary" data-use="${item.payload}">Использовать</button>`}else{actionHTML=`<div style="color:var(--success);font-size:.8rem;font-weight:700">✓ Есть</div>`}}else{const canAfford=storage.get().settings.isDev||w.coins>=item.price;actionHTML=`<div class="shop-item-price">🪙 ${item.price}</div><button class="btn ${canAfford?'btn-primary':''}" ${canAfford?'':'disabled'} data-buy="${item.id}">${canAfford?'Купить':'Мало'}</button>`}return`<div class="shop-item ${owned?'owned':''}">${qty>0?`<div class="shop-qty">x${qty}</div>`:''}<div class="shop-item-icon">${item.icon}</div><div class="shop-item-name">${item.name}</div><div class="shop-item-desc">${item.desc}</div>${actionHTML}</div>`}).join('')}
+document.querySelectorAll('.shop-tab').forEach(t=>{t.addEventListener('click',e=>renderShop(e.target.dataset.tab))});
+document.getElementById('shopGrid').addEventListener('click',e=>{const buyBtn=e.target.closest('[data-buy]');if(buyBtn){const item=SHOP_ITEMS.find(i=>i.id===buyBtn.dataset.buy);if(!item)return;if(wallet.spend(item.price)){const w=storage.get().wallet;if(item.type==='theme')w.unlocked.themes.push(item.payload);if(item.type==='consumable')w.inventory[item.payload]=(w.inventory[item.payload]||0)+1;if(item.type==='effect')w.doubleUntil=Date.now()+3600000;storage.save();ui.showToast(`Куплено: ${item.name}`);haptic('success');document.getElementById('shopBtn').click()}return}const useBtn=e.target.closest('[data-use]');if(useBtn){const theme=useBtn.dataset.use;storage.get().settings.activeTheme=theme;document.documentElement.dataset.theme=theme;storage.save();ui.showToast('Тема применена!');document.getElementById('shopBtn').click()}});
+document.getElementById('closeShopBtn').addEventListener('click',()=>document.getElementById('shopModal').classList.remove('open'));
+
+// СТАТИСТИКА
+document.getElementById('statsBtn').addEventListener('click',()=>{const s=analytics.getStats();const maxCount=Math.max(...Object.values(s.week),1);let chartHTML='<div style="display:flex;align-items:flex-end;justify-content:space-between;height:120px;margin-top:20px;padding-bottom:10px;border-bottom:1px solid var(--border);">';Object.entries(s.week).forEach(([date,count])=>{const dayName=date.slice(8);const height=(count/maxCount)*100;const color=count>0?'var(--accent)':'var(--surface)';chartHTML+=`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="font-size:0.7rem;color:var(--text-muted);font-weight:600;">${count>0?count:''}</div><div style="width:100%;max-width:24px;height:${Math.max(height,5)}%;background:${color};border-radius:6px 6px 0 0;transition:height 0.3s;"></div><div style="font-size:0.7rem;color:var(--text-muted);">${dayName}</div></div>`});chartHTML+='</div>';document.getElementById('statsContent').innerHTML=`<div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px;"><div style="background:var(--surface);padding:12px;border-radius:12px;flex:1;text-align:center;border:1px solid var(--border);"><div style="font-size:1.5rem;font-weight:800;color:var(--accent);">${s.total}</div><div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Всего</div></div><div style="background:var(--surface);padding:12px;border-radius:12px;flex:1;text-align:center;border:1px solid var(--border);"><div style="font-size:1.5rem;font-weight:800;color:var(--accent-2);">${(s.min/60).toFixed(1)}</div><div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Часов</div></div></div><h4 style="font-size:0.9rem;margin-bottom:4px;text-align:center;color:var(--text-muted);">Активность за 7 дней</h4>${chartHTML}<p style="font-size:0.75rem;color:var(--text-muted);margin-top:15px;text-align:center;">Каждый столбик — количество помидоров в день</p>`;document.getElementById('statsModal').classList.add('open')});
+document.getElementById('closeStatsBtn').addEventListener('click',()=>document.getElementById('statsModal').classList.remove('open'));
+
+// КОЛЕСО
+document.getElementById('wheelBtn').addEventListener('click',()=>{const s=storage.get();const btn=document.getElementById('spinBtn');if(s.wallet.spinUsed&&!s.settings.isDev){btn.textContent='Завтра!'}else{btn.textContent='Крутить'}document.getElementById('wheelModal').classList.add('open')});
+document.getElementById('spinBtn').addEventListener('click',()=>{const s=storage.get();if(s.wallet.spinUsed&&!s.settings.isDev)return;const wheel=document.getElementById('wheel');const btn=document.getElementById('spinBtn');btn.style.pointerEvents='none';btn.textContent='...';s.wallet.spinUsed=true;storage.save();haptic('impact');const winIndex=Math.floor(Math.random()*8);const targetAngle=1800+(winIndex*45)+22.5;wheel.style.transform=`rotate(${targetAngle}deg)`;setTimeout(()=>{const win=winIndex===0?50:winIndex===1?0:winIndex===2?1:winIndex===3?10:winIndex===4?100:winIndex===5?0:winIndex===6?20:2;if(win===1){ui.showToast('🎉 Заморозка!')}else if(win===2){ui.showToast('🎉 x2 монеты!')}else if(win===0){ui.showToast('😢 Пусто')}else{wallet.earn(win);ui.showToast(`🎉 +${win} 🪙`)}haptic('success');wheel.style.transition='none';wheel.style.transform='rotate(0deg)';setTimeout(()=>{wheel.style.transition='transform 4s cubic-bezier(0.15, 0.85, 0.25, 1)'},50);btn.style.pointerEvents='auto';btn.textContent=s.settings.isDev?'Крутить':'Завтра!';document.getElementById('shopBtn').click()},4000)});
+document.getElementById('closeWheelBtn').addEventListener('click',()=>document.getElementById('wheelModal').classList.remove('open'));
+
+// КВЕСТЫ
+const QUEST_POOL = [
+  {id:'f1',text:'Заверши 1 помидор',target:1,type:'pomo',reward:10,tier:1},
+  {id:'f3',text:'Заверши 3 помидора',target:3,type:'pomo',reward:30,tier:1},
+  {id:'h1',text:'Заверши 1 привычку',target:1,type:'habit',reward:40,tier:1},
+  {id:'e50',text:'Заработай 50 монет',target:50,type:'earn',reward:20,tier:1},
+  {id:'w1',text:'Прокрути колесо',target:1,type:'wheel',reward:15,tier:1},
+  {id:'s2',text:'Достигни стрика 2',target:2,type:'streak',reward:50,tier:1},
+  {id:'f5',text:'Заверши 5 помидоров',target:5,type:'pomo',reward:60,tier:2},
+  {id:'h2',text:'Заверши 2 привычки',target:2,type:'habit',reward:80,tier:2},
+  {id:'e100',text:'Заработай 100 монет',target:100,type:'earn',reward:50,tier:2},
+  {id:'s3',text:'Достигни стрика 3',target:3,type:'streak',reward:100,tier:2},
+  {id:'early',text:'Ранняя пташка (до 8:00)',target:1,type:'time',reward:40,tier:2},
+  {id:'night',text:'Сова (после 23:00)',target:1,type:'time',reward:40,tier:2},
+  {id:'f10',text:'Заверши 10 помидоров',target:10,type:'pomo',reward:150,tier:3},
+  {id:'s7',text:'Достигни стрика 7',target:7,type:'streak',reward:250,tier:3},
+  {id:'perfect',text:'Идеальный день (все привычки)',target:1,type:'perfect',reward:200,tier:3}
+];
+
+function generateDailyQuests() {
+  const s = storage.get();
+  const t1 = QUEST_POOL.filter(q => q.tier === 1);
+  const t2 = QUEST_POOL.filter(q => q.tier === 2);
+  const t3 = QUEST_POOL.filter(q => q.tier === 3);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  s.daily.quests = [
+    { ...pick(t1), progress: 0, claimed: false },
+    { ...pick(t2), progress: 0, claimed: false },
+    { ...pick(t3), progress: 0, claimed: false }
+  ];
+  s.daily.date = todayStr();
+  storage.save();
+}
+if (!storage.get().daily.date || storage.get().daily.date !== todayStr()) { generateDailyQuests(); }
+
+function checkQuests() {
+  const s = storage.get();
+  const todaySessions = s.sessions.filter(x => x.date === todayStr());
+  const todayHabits = new Set(todaySessions.map(x => x.habitId)).size;
+  const maxStreak = Math.max(...habits.list().map(h => analytics.getStreak(h.id)), 0);
+  s.daily.quests.forEach(q => {
+    if (q.claimed) return;
+    if (q.type === 'pomo') q.progress = todaySessions.length;
+    else if (q.type === 'habit') q.progress = todayHabits;
+    else if (q.type === 'earn') q.progress = s.wallet.coins;
+    else if (q.type === 'streak') q.progress = maxStreak;
+    else if (q.type === 'wheel') q.progress = s.wallet.spinUsed ? 1 : 0;
+    else if (q.type === 'time') {
+      const h = new Date().getHours();
+      if ((q.id === 'early' && h < 8) || (q.id === 'night' && h >= 23)) q.progress = 1;
+    }
+  });
+  storage.save();
+}
+
+window.skipQuest = function(id) {
+  const s = storage.get();
+  if (s.wallet.coins < 20) return ui.showToast('Недостаточно монет!');
+  wallet.spend(20);
+  const idx = s.daily.quests.findIndex(q => q.id === id);
+  if (idx !== -1) {
+    const q = s.daily.quests[idx];
+    const pool = QUEST_POOL.filter(x => x.tier === q.tier && !s.daily.quests.some(y => y.id === x.id));
+    const newQuest = pool[Math.floor(Math.random() * pool.length)] || QUEST_POOL[0];
+    s.daily.quests[idx] = { ...newQuest, progress: 0, claimed: false };
+    storage.save();
+    renderQuests();
+    ui.showToast('Квест заменен!');
+  }
+};
+
+window.claimQuest = function(id) {
+  const s = storage.get();
+  const q = s.daily.quests.find(x => x.id === id);
+  if (q && q.progress >= q.target && !q.claimed) {
+    q.claimed = true;
+    wallet.earn(q.reward);
+    ui.showToast('Награда получена!');
+    haptic('success');
+    storage.save();
+    renderQuests();
+  }
+};
+
+function renderQuests() {
+  const s = storage.get();
+  let html = '';
+  s.daily.quests.forEach(q => {
+    const pct = Math.min(100, ((q.progress || 0) / q.target) * 100);
+    html += `
+      <div class="quest-item">
+        <div class="quest-info">
+          <div class="quest-title">${q.text}</div>
+          <div class="quest-progress-text">${q.progress || 0} / ${q.target} · 🪙 ${q.reward}</div>
+          <div style="background:var(--bg);height:6px;border-radius:3px;margin-top:6px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;background:var(--accent);"></div>
+          </div>
+        </div>
+        <div class="quest-actions">
+          ${q.claimed 
+            ? `<button class="btn" disabled style="color:var(--success)">✓ Готово</button>`
+            : (q.progress || 0) >= q.target
+              ? `<button class="btn btn-primary" onclick="claimQuest('${q.id}')">Забрать</button>`
+              : `<button class="btn btn-skip" ${s.wallet.coins >= 20 ? '' : 'disabled'} onclick="skipQuest('${q.id}')">🔄 -20🪙</button>`
+          }
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('questsContent').innerHTML = html;
+}
+
+// ДОСТИЖЕНИЯ
+const ACHIEVEMENTS = [
+  { id: 'ach_first', name: 'Первый шаг', icon: '🌱', desc: 'Заверши 1 помидор', check: s => s.sessions.length >= 1 },
+  { id: 'ach_10', name: 'В деле', icon: '🎯', desc: 'Заверши 10 помидоров', check: s => s.sessions.length >= 10 },
+  { id: 'ach_100', name: 'Сотня!', icon: '💯', desc: 'Заверши 100 помидоров', check: s => s.sessions.length >= 100 },
+  { id: 'ach_rich', name: 'Богач', icon: '💰', desc: 'Накопи 1000 монет', check: s => s.wallet.coins >= 1000 },
+  { id: 'ach_wheel', name: 'Фортуна', icon: '🎡', desc: 'Прокрути колесо', check: s => s.wallet.spinUsed },
+  { id: 'ach_streak7', name: 'Неделя силы', icon: '🔥', desc: 'Стрик 7 дней', check: s => habits.list().some(h => analytics.getStreak(h.id) >= 7) },
+  { id: 'ach_early', name: 'Ранняя пташка', icon: '🌅', desc: 'Помидор до 8:00', check: s => s.sessions.some(x => new Date(x.completedAt).getHours() < 8) },
+  { id: 'ach_night', name: 'Сова', icon: '🦉', desc: 'Помидор после 23:00', check: s => s.sessions.some(x => new Date(x.completedAt).getHours() >= 23) },
+  { id: 'ach_speed', name: 'Спидран', icon: '💨', desc: '10 помидоров за день', check: s => s.sessions.filter(x => x.date === todayStr()).length >= 10 },
+  { id: 'ach_habit3', name: 'Коллекционер', icon: '📚', desc: 'Создай 3 привычки', check: s => habits.list().length >= 3 }
+];
+
+function checkAchievements() {
+  const s = storage.get();
+  let newUnlocked = false;
+  ACHIEVEMENTS.forEach(a => {
+    if (!s.achievements.unlocked.includes(a.id) && a.check(s)) {
+      s.achievements.unlocked.push(a.id);
+      wallet.earn(50);
+      ui.showToast(`🏅 Достижение: ${a.name}!`);
+      haptic('success');
+      newUnlocked = true;
+    }
+  });
+  if (newUnlocked) storage.save();
+}
+
+function renderAchievements() {
+  const s = storage.get();
+  let html = '<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">';
+  ACHIEVEMENTS.forEach(a => {
+    const isUnlocked = s.achievements.unlocked.includes(a.id);
+    html += `
+      <div style="background:${isUnlocked ? 'var(--surface)' : 'rgba(255,255,255,.02)'}; border:1px solid ${isUnlocked ? 'var(--border)' : 'transparent'}; border-radius:12px; padding:12px; text-align:center; ${isUnlocked ? '' : 'opacity:0.5;'}">
+        <div style="font-size:2rem; margin-bottom:6px;">${isUnlocked ? a.icon : '🔒'}</div>
+        <div style="font-weight:700; font-size:0.8rem; margin-bottom:4px;">${a.name}</div>
+        <div style="font-size:0.65rem; color:var(--text-muted);">${a.desc}</div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  document.getElementById('achieveContent').innerHTML = html;
+}
+
+document.getElementById('questsBtn').addEventListener('click', () => { checkQuests(); renderQuests(); document.getElementById('questsModal').classList.add('open'); });
+document.getElementById('achieveBtn').addEventListener('click', () => { renderAchievements(); document.getElementById('achieveModal').classList.add('open'); });
+
+// НАСТРОЙКИ / ПРОМОКОДЫ
+document.getElementById('settingsBtn').addEventListener('click',()=>{const s=storage.get().settings;document.getElementById('sPomo').value=s.pomodoroMin;document.getElementById('sShort').value=s.shortBreakMin;document.getElementById('sLong').value=s.longBreakMin;let txt="Введите промокод.",col="var(--text-muted)";if(s.isDev){txt="🛠 Разработчик!";col="#34d399"}else if(s.isVip){txt="⭐ VIP статус!";col="#fbbf24"}const v=document.getElementById('vipStatus');v.innerHTML=txt;v.style.color=col;document.getElementById('settingsModal').classList.add('open')});
+document.getElementById('applyPromoBtn').addEventListener('click',()=>{const code=document.getElementById('promoInput').value.trim().toLowerCase();const s=storage.get();const v=document.getElementById('vipStatus');if(code==='korozkan'){if(s.settings.isVip){v.innerHTML="❌ VIP уже активирован!";v.style.color="var(--danger)"}else{s.settings.isVip=true;wallet.earn(500);v.innerHTML="🎉 VIP! +500 🪙";v.style.color="#fbbf24"}}else if(code==='degystaciavsellennou'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит активирован!";v.style.color="#34d399"}else if(code==='dev'||code==='admin'){s.settings.isDev=true;v.innerHTML="🛠 Безлимит!";v.style.color="#34d399"}else{v.innerHTML="❌ Неверный код.";v.style.color="var(--danger)"}storage.save()});
+document.getElementById('saveSettingsBtn').addEventListener('click',()=>{const s=storage.get();s.settings.pomodoroMin=Math.max(1,+document.getElementById('sPomo').value);s.settings.shortBreakMin=Math.max(0.1,+document.getElementById('sShort').value);s.settings.longBreakMin=Math.max(1,+document.getElementById('sLong').value);storage.save();timer._setPhase(timer.phase,true);ui.renderTimer(timer.remaining,timer.phase);document.getElementById('settingsModal').classList.remove('open')});
+document.getElementById('closeSettingsBtn').addEventListener('click',()=>document.getElementById('settingsModal').classList.remove('open'));
+
+if (!tg) {
+  document.documentElement.dataset.theme=storage.get().settings.activeTheme||'dark';
+}
+document.addEventListener('click',e=>{if(e.target.classList.contains('color-dot')){document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active'));e.target.classList.add('active');document.getElementById('hColor').value=e.target.dataset.color}});
+document.getElementById('addHabitBtn').addEventListener('click',()=>{document.querySelectorAll('.color-dot').forEach(dot=>dot.classList.remove('active'));const first=document.querySelector('.color-dot');if(first){first.classList.add('active');document.getElementById('hColor').value=first.dataset.color}});
+</script>
+</body>
+  </html>
